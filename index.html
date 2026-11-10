@@ -128,7 +128,7 @@
         /* ── Back to top ── */
         #back-to-top {
             position: fixed;
-            bottom: 32px; right: 32px;
+            bottom: 32px; right: 96px;
             width: 46px; height: 46px;
             background: linear-gradient(135deg, #4f46e5, #a855f7);
             border: none; border-radius: 50%;
@@ -499,6 +499,103 @@
             .commands-grid { grid-template-columns: 1fr; }
             nav { flex-direction: column; background: rgba(10,12,21,0.9); border-radius: 24px; }
         }
+
+        #ai-fab {
+            position: fixed;
+            bottom: 32px; right: 32px;
+            width: 58px; height: 58px;
+            border: none; border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #a855f7 55%, #2dd4bf);
+            color: #fff; font-size: 1.35rem;
+            display: grid; place-items: center;
+            cursor: pointer; z-index: 1002;
+            box-shadow: 0 14px 34px -8px rgba(79,70,229,.85), 0 0 0 1px rgba(255,255,255,.12) inset;
+            transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s;
+        }
+        #ai-fab:hover { transform: translateY(-4px) scale(1.06); box-shadow: 0 22px 44px -10px rgba(168,85,247,.9); }
+        #ai-fab:active { transform: translateY(-1px) scale(.98); }
+        #ai-fab::before {
+            content: ''; position: absolute; inset: -4px; border-radius: 50%;
+            border: 1px solid rgba(129,140,248,.55);
+            animation: aiPulse 2.6s ease-out infinite;
+        }
+        #ai-fab .ai-fab-dot {
+            position: absolute; top: 2px; right: 2px;
+            width: 12px; height: 12px; border-radius: 50%;
+            background: #22c55e; border: 2px solid #060810;
+        }
+        #ai-fab.active { transform: scale(.94); }
+        @keyframes aiPulse {
+            0% { transform: scale(.92); opacity: .9; }
+            70% { transform: scale(1.35); opacity: 0; }
+            100% { transform: scale(1.35); opacity: 0; }
+        }
+
+        #ai-panel {
+            position: fixed;
+            right: 32px; bottom: 104px;
+            width: 400px;
+            max-width: calc(100vw - 24px);
+            height: min(620px, calc(100vh - 140px));
+            display: flex; flex-direction: column;
+            background: linear-gradient(160deg, rgba(12,17,34,.97), rgba(7,10,22,.98));
+            border: 1px solid rgba(129,140,248,.35);
+            border-radius: 28px;
+            box-shadow: 0 30px 80px -20px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.04) inset, 0 0 60px -20px rgba(79,70,229,.7);
+            z-index: 1003;
+            overflow: hidden;
+            opacity: 0; pointer-events: none;
+            transform: translateY(18px) scale(.97);
+            transform-origin: bottom right;
+            transition: opacity .28s ease, transform .28s cubic-bezier(.16,1,.3,1);
+            backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+        }
+        #ai-panel.open { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+        .ai-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid rgba(129,140,248,.18); background: linear-gradient(90deg, rgba(79,70,229,.18), rgba(168,85,247,.08)); }
+        .ai-head-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
+        .ai-avatar { width: 38px; height: 38px; border-radius: 13px; display: grid; place-items: center; background: linear-gradient(135deg, #4f46e5, #a855f7); color: #fff; font-size: 1rem; box-shadow: 0 8px 18px -8px rgba(79,70,229,.9); }
+        .ai-head-info strong { display: block; font-size: .95rem; letter-spacing: -.01em; }
+        .ai-head-info span { display: flex; align-items: center; gap: 6px; font-size: .7rem; color: #9fb0dd; }
+        .ai-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+        .ai-head-actions { display: flex; gap: 6px; }
+        .ai-head-actions button { width: 30px; height: 30px; border-radius: 10px; border: 1px solid rgba(129,140,248,.22); background: rgba(11,16,34,.7); color: #9fb0dd; cursor: pointer; transition: .2s; }
+        .ai-head-actions button:hover { color: #fff; border-color: #818cf8; background: rgba(79,70,229,.22); }
+        .ai-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; scrollbar-width: thin; scrollbar-color: #2a3650 transparent; }
+        .ai-messages::-webkit-scrollbar { width: 6px; }
+        .ai-messages::-webkit-scrollbar-thumb { background: #2a3650; border-radius: 999px; }
+        .ai-msg { display: flex; gap: 8px; max-width: 100%; animation: aiMsgIn .3s cubic-bezier(.16,1,.3,1) both; }
+        .ai-msg.user { justify-content: flex-end; }
+        .ai-msg .ai-bubble { max-width: 86%; padding: 10px 13px; border-radius: 16px; font-size: .82rem; line-height: 1.55; color: #dbe4ff; word-wrap: break-word; }
+        .ai-msg.bot .ai-bubble { background: rgba(20,28,52,.9); border: 1px solid rgba(129,140,248,.18); border-bottom-left-radius: 6px; }
+        .ai-msg.user .ai-bubble { background: linear-gradient(135deg, #4f46e5, #7c3aed); border-bottom-right-radius: 6px; color: #fff; }
+        .ai-bubble b { color: #fff; }
+        .ai-bubble code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .78em; background: rgba(79,70,229,.22); border: 1px solid rgba(129,140,248,.25); border-radius: 6px; padding: 1px 5px; color: #c4b5fd; }
+        .ai-bubble a { color: #7dd3fc; text-decoration: underline; text-underline-offset: 2px; }
+        .ai-bubble ul { margin: 6px 0 0; padding-left: 16px; }
+        .ai-bubble li { margin: 2px 0; }
+        .ai-bubble .ai-meta { display: inline-block; margin-top: 6px; font-size: .68rem; color: #8b9ac9; }
+        @keyframes aiMsgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .ai-typing { display: inline-flex; gap: 4px; align-items: center; padding: 12px 14px; }
+        .ai-typing i { width: 6px; height: 6px; border-radius: 50%; background: #818cf8; animation: aiBlink 1.2s infinite; }
+        .ai-typing i:nth-child(2) { animation-delay: .15s; }
+        .ai-typing i:nth-child(3) { animation-delay: .3s; }
+        @keyframes aiBlink { 0%, 60%, 100% { opacity: .25; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+        .ai-suggest { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 14px 10px; }
+        .ai-suggest button { font-family: inherit; font-size: .7rem; color: #a5b4fc; background: rgba(79,70,229,.14); border: 1px solid rgba(129,140,248,.28); border-radius: 999px; padding: 5px 10px; cursor: pointer; transition: .2s; }
+        .ai-suggest button:hover { color: #fff; border-color: #818cf8; background: rgba(79,70,229,.3); transform: translateY(-1px); }
+        .ai-form { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid rgba(129,140,248,.16); background: rgba(7,10,22,.7); }
+        .ai-form input { flex: 1; min-width: 0; background: rgba(11,16,34,.9); border: 1px solid #2a3650; border-radius: 14px; padding: 11px 13px; color: #edf2ff; font-family: inherit; font-size: .82rem; outline: none; transition: .2s; }
+        .ai-form input::placeholder { color: #4a5580; }
+        .ai-form input:focus { border-color: #818cf8; box-shadow: 0 0 0 3px rgba(129,140,248,.12); }
+        .ai-form button { width: 42px; height: 42px; border: none; border-radius: 14px; background: linear-gradient(135deg, #4f46e5, #a855f7); color: #fff; cursor: pointer; font-size: .95rem; transition: .2s; }
+        .ai-form button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -8px rgba(168,85,247,.9); }
+        .ai-foot { text-align: center; font-size: .62rem; color: #4f5b8c; padding: 0 12px 10px; background: rgba(7,10,22,.7); }
+        @media (max-width: 760px) {
+            #ai-fab { width: 52px; height: 52px; right: 20px; bottom: 20px; font-size: 1.2rem; }
+            #ai-panel { right: 12px; left: 12px; bottom: 84px; width: auto; max-width: none; height: min(620px, calc(100vh - 100px)); border-radius: 24px; }
+            #back-to-top { right: 84px; bottom: 20px; }
+            .ai-msg .ai-bubble { max-width: 90%; }
+        }
     </style>
 </head>
 <body>
@@ -515,6 +612,7 @@
             <a href="#commands">Команды</a>
             <a href="#moderation">Модерация</a>
             <a href="#admin-team">Админ</a>
+            <a href="#" data-ai-open><i class="fas fa-robot"></i> AI-помощник</a>
             <a href="https://t.me/ChatCleanser_bot" target="_blank" class="btn-outline" style="padding:8px 18px;"><i class="fab fa-telegram"></i> Бот</a>
         </div>
     </nav>
@@ -530,6 +628,7 @@
                 <div class="hero-buttons" style="display:flex;gap:18px;flex-wrap:wrap;">
                     <a href="https://t.me/ChatCleanser_bot" target="_blank" class="btn-primary"><i class="fab fa-telegram"></i> Добавить в группу</a>
                     <a href="#commands" class="btn-outline"><i class="fas fa-terminal"></i> Все команды</a>
+                    <button class="btn-outline" type="button" data-ai-open><i class="fas fa-robot"></i> Спросить AI</button>
                 </div>
                 <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;">
                     <span class="hash-badge"><i class="fas fa-hashtag"></i> команды → #commands</span>
@@ -574,28 +673,28 @@
                 <button class="chip" data-cat="lvl3" type="button">3+ lvl</button>
                 <button class="chip" data-cat="lvl4" type="button">4+ lvl</button>
                 <button class="chip" data-cat="lvl5" type="button">5+ lvl 👑</button>
+                <button class="chip" data-cat="dev" type="button">🛠 Разработчик</button>
             </div>
 
             <!-- Для всех -->
             <div class="command-category" style="--order:1" data-cat="base">
                 <div class="category-title"><span class="cat-ico"><i class="fas fa-smile"></i></span>👤 Для всех<span class="cat-count"></span></div>
                 <div class="commands-grid">
-                    <div class="cmd-entry"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-play-circle"></i></span><span class="cmd-name">/start</span></div><div class="cmd-desc">запустить бота</div></div>
-                    <div class="cmd-entry"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-question-circle"></i></span><span class="cmd-name">/help</span></div><div class="cmd-desc">список команд</div></div>
-                    <div class="cmd-entry"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-user"></i></span><span class="cmd-name">/profile</span></div><div class="cmd-desc">твой профиль</div></div>
-                    <div class="cmd-entry" data-kw="идентификатор юзер"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-id-card"></i></span><span class="cmd-name">/id [@user]</span></div><div class="cmd-desc">узнать ID пользователя</div></div>
-                    <div class="cmd-entry" data-kw="деньги балл баланс коины"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-coins"></i></span><span class="cmd-name">/balance</span></div><div class="cmd-desc">проверить очки</div></div>
-                    <div class="cmd-entry" data-kw="ежедневный бонус награда"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-calendar-check"></i></span><span class="cmd-name">/daily</span></div><div class="cmd-desc">+10 очков раз в день</div></div>
-                    <div class="cmd-entry" data-kw="перевод отправить деньги"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-exchange-alt"></i></span><span class="cmd-name">/transfer @user сумма</span></div><div class="cmd-desc">перевести очки другу</div></div>
-                    <div class="cmd-entry" data-kw="торговля покупки предметы"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-store"></i></span><span class="cmd-name">/shop</span></div><div class="cmd-desc">магазин</div></div>
-                    <div class="cmd-entry" data-kw="приобрести товар"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-shopping-cart"></i></span><span class="cmd-name">/buy [номер]</span></div><div class="cmd-desc">купить товар</div></div>
-                    <div class="cmd-entry" data-kw="предметы рюкзак вещи"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-box"></i></span><span class="cmd-name">/inventory</span></div><div class="cmd-desc">инвентарь</div></div>
-                    <div class="cmd-entry" data-kw="премиум привилегия подписка"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-crown"></i></span><span class="cmd-name">/vip</span></div><div class="cmd-desc">VIP-статус и привилегии</div></div>
+                    <div class="cmd-entry" data-kw="запуск приветствие начало"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-play-circle"></i></span><span class="cmd-name">/start</span></div><div class="cmd-desc">запустить бота</div></div>
+                    <div class="cmd-entry" data-kw="помощь справка сайт поддержка"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-question-circle"></i></span><span class="cmd-name">/help</span></div><div class="cmd-desc">помощь и ссылка на руководство</div></div>
+                    <div class="cmd-entry" data-kw="профиль карточка статистика наказания рулетка"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-user"></i></span><span class="cmd-name">/profile [@user]</span></div><div class="cmd-desc">профиль, статистика и наказания</div></div>
+                    <div class="cmd-entry" data-kw="идентификатор юзер чат айди"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-id-card"></i></span><span class="cmd-name">/id [@user]</span></div><div class="cmd-desc">узнать ID пользователя или чата</div></div>
+                    <div class="cmd-entry" data-kw="деньги балл баланс коины"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-coins"></i></span><span class="cmd-name">/balance</span></div><div class="cmd-desc">проверить баланс очков</div></div>
+                    <div class="cmd-entry" data-kw="ежедневный бонус награда 10"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-calendar-check"></i></span><span class="cmd-name">/daily</span></div><div class="cmd-desc">+10 очков раз в день</div></div>
+                    <div class="cmd-entry" data-kw="перевод отправить деньги другу"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-exchange-alt"></i></span><span class="cmd-name">/transfer @user сумма</span></div><div class="cmd-desc">перевести очки другу</div></div>
+                    <div class="cmd-entry" data-kw="торговля покупки предметы товары"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-store"></i></span><span class="cmd-name">/shop</span></div><div class="cmd-desc">магазин товаров и VIP</div></div>
+                    <div class="cmd-entry" data-kw="приобрести товар vip купить"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-shopping-cart"></i></span><span class="cmd-name">/buy [номер]</span></div><div class="cmd-desc">купить товар или /buy vip1-vip5</div></div>
+                    <div class="cmd-entry" data-kw="предметы рюкзак вещи покупки"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-box"></i></span><span class="cmd-name">/inventory</span></div><div class="cmd-desc">инвентарь покупок</div></div>
+                    <div class="cmd-entry" data-kw="премиум привилегия подписка иммунитет"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-crown"></i></span><span class="cmd-name">/vip</span></div><div class="cmd-desc">VIP-статус и привилегии</div></div>
                     <div class="cmd-entry" data-kw="правила чата регламент"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-book"></i></span><span class="cmd-name">/rules</span></div><div class="cmd-desc">правила чата</div></div>
-                    <div class="cmd-entry" data-kw="админы модераторы персонал"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-shield-alt"></i></span><span class="cmd-name">/staff</span></div><div class="cmd-desc">список администраторов</div></div>
-                    <div class="cmd-entry" data-kw="статистика топ активность"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-chart-bar"></i></span><span class="cmd-name">/chatstats</span></div><div class="cmd-desc">топ активных участников</div></div>
-                    <div class="cmd-entry" data-kw="жалоба репорт пожаловаться"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-flag"></i></span><span class="cmd-name">/report причина</span></div><div class="cmd-desc">пожаловаться (ответом на сообщение)</div></div>
-                    <div class="cmd-entry" data-kw="помощь вызвать модератора"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-bell"></i></span><span class="cmd-name">/calladmin причина</span></div><div class="cmd-desc">вызвать администратора</div></div>
+                    <div class="cmd-entry" data-kw="админы модераторы персонал состав"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-shield-alt"></i></span><span class="cmd-name">/staff</span></div><div class="cmd-desc">список администраторов чата</div></div>
+                    <div class="cmd-entry" data-kw="статистика топ активность сообщения"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-chart-bar"></i></span><span class="cmd-name">/chatstats</span></div><div class="cmd-desc">топ активных участников</div></div>
+                    <div class="cmd-entry" data-kw="жалоба репорт пожаловаться модераторы"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-flag"></i></span><span class="cmd-name">/report причина</span></div><div class="cmd-desc">жалоба в чат модераторов</div></div>
                 </div>
             </div>
 
@@ -603,18 +702,14 @@
             <div class="command-category" style="--order:2" data-cat="games">
                 <div class="category-title"><span class="cat-ico"><i class="fas fa-gamepad"></i></span>🎮 Игры<span class="cat-count"></span></div>
                 <div class="commands-grid">
-                    <div class="cmd-entry" data-kw="гейм развлечение прикол"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-dice-d6"></i></span><span class="cmd-name">/dick</span></div><div class="cmd-desc">игра «писька» — раз в день</div></div>
-                    <div class="cmd-entry" data-kw="лидерборд рейтинг игроков"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-trophy"></i></span><span class="cmd-name">/top</span></div><div class="cmd-desc">топ игроков</div></div>
-                    <div class="cmd-entry" data-kw="угадать число мини-игра"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-brain"></i></span><span class="cmd-name">/game</span></div><div class="cmd-desc">угадай число от 1 до 10</div></div>
-                    <div class="cmd-entry" data-kw="ставки азарт ставка"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-dollar-sign"></i></span><span class="cmd-name">/casino [ставка]</span></div><div class="cmd-desc">казино — испытай удачу</div></div>
-                    <div class="cmd-entry" data-kw="любовь пары свайп"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-heart"></i></span><span class="cmd-name">/love @user</span></div><div class="cmd-desc">совместимость с другом</div></div>
+                    <div class="cmd-entry" data-kw="угадать число мини-игра 50 очков"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-brain"></i></span><span class="cmd-name">/game</span></div><div class="cmd-desc">угадай число от 1 до 10 — +50 очков</div></div>
+                    <div class="cmd-entry" data-kw="рулетка ставка джекпот казино зеро"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-dice"></i></span><span class="cmd-name">/roulette [ставка]</span></div><div class="cmd-desc">рулетка со ставкой 1–1000 и джекпотом</div></div>
+                    <div class="cmd-entry" data-kw="статистика рулетки джекпот победы"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-chart-pie"></i></span><span class="cmd-name">/roulette_stats</span></div><div class="cmd-desc">твоя статистика рулетки</div></div>
+                    <div class="cmd-entry" data-kw="камень ножницы бумага rps"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-hand-peace"></i></span><span class="cmd-name">/rps</span></div><div class="cmd-desc">камень-ножницы-бумага — +10 за победу</div></div>
                     <div class="cmd-entry" data-kw="монетка орёл решка"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-coins"></i></span><span class="cmd-name">/coin</span></div><div class="cmd-desc">подбросить монетку</div></div>
-                    <div class="cmd-entry" data-kw="кубик бросок"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-cube"></i></span><span class="cmd-name">/cube</span></div><div class="cmd-desc">бросить кубик</div></div>
-                    <div class="cmd-entry" data-kw="кости бросок два"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-dice"></i></span><span class="cmd-name">/dice</span></div><div class="cmd-desc">бросить два кубика</div></div>
-                    <div class="cmd-entry" data-kw="камень ножницы бумага rps"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-hand-peace"></i></span><span class="cmd-name">/rps [камень/ножницы/бумага]</span></div><div class="cmd-desc">камень-ножницы-бумага</div></div>
-                    <div class="cmd-entry" data-kw="цитаты мудрость"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-quote-right"></i></span><span class="cmd-name">/quote</span></div><div class="cmd-desc">мудрая цитата</div></div>
-                    <div class="cmd-entry" data-kw="юмор шутка анек"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-laugh"></i></span><span class="cmd-name">/anecdote</span></div><div class="cmd-desc">свежий анекдот</div></div>
-                    <div class="cmd-entry" data-kw="интересный факт познавательно"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-lightbulb"></i></span><span class="cmd-name">/fact</span></div><div class="cmd-desc">интересный факт</div></div>
+                    <div class="cmd-entry" data-kw="кости кубики бросок два"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-dice"></i></span><span class="cmd-name">/dice</span></div><div class="cmd-desc">бросить два кубика</div></div>
+                    <div class="cmd-entry" data-kw="писька размер игра раз в день"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-dice-d6"></i></span><span class="cmd-name">/dick</span></div><div class="cmd-desc">игра «писька» — раз в день</div></div>
+                    <div class="cmd-entry" data-kw="топ размеры рейтинг лидерборд"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-trophy"></i></span><span class="cmd-name">/top</span></div><div class="cmd-desc">топ-10 размеров в чате</div></div>
                 </div>
             </div>
 
@@ -622,16 +717,12 @@
             <div class="command-category" style="--order:3" data-cat="social">
                 <div class="category-title"><span class="cat-ico"><i class="fas fa-users"></i></span>🤝 Социальные<span class="cat-count"></span></div>
                 <div class="commands-grid">
-                    <div class="cmd-entry" data-kw="рейтинг плюс реп"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-star"></i></span><span class="cmd-name">/rep @user</span></div><div class="cmd-desc">поставить репутацию</div></div>
-                    <div class="cmd-entry" data-kw="рейтинг репутации топ"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-chart-simple"></i></span><span class="cmd-name">/repstats</span></div><div class="cmd-desc">топ репутации</div></div>
+                    <div class="cmd-entry" data-kw="рейтинг плюс реп репутация"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-star"></i></span><span class="cmd-name">/rep @user</span></div><div class="cmd-desc">повысить репутацию на 1</div></div>
+                    <div class="cmd-entry" data-kw="рейтинг репутации топ"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-chart-simple"></i></span><span class="cmd-name">/repstats</span></div><div class="cmd-desc">топ-10 по репутации</div></div>
                     <div class="cmd-entry" data-kw="добавить друга заявка"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-user-plus"></i></span><span class="cmd-name">/friend @user</span></div><div class="cmd-desc">добавить в друзья</div></div>
                     <div class="cmd-entry" data-kw="удалить друга расстаться"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-user-minus"></i></span><span class="cmd-name">/unfriend @user</span></div><div class="cmd-desc">удалить из друзей</div></div>
                     <div class="cmd-entry" data-kw="список друзей друзья"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-users"></i></span><span class="cmd-name">/friends</span></div><div class="cmd-desc">список друзей</div></div>
-                    <div class="cmd-entry" data-kw="брак предложение свадьба"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-ring"></i></span><span class="cmd-name">/marry @user</span></div><div class="cmd-desc">сделать предложение</div></div>
-                    <div class="cmd-entry" data-kw="развод расставание"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-heart-broken"></i></span><span class="cmd-name">/divorce</span></div><div class="cmd-desc">развестись</div></div>
-                    <div class="cmd-entry" data-kw="клан гильдия команда create join leave info top"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-flag"></i></span><span class="cmd-name">/clan create/join/leave/info/top</span></div><div class="cmd-desc">управление кланом</div></div>
-                    <div class="cmd-entry" data-kw="награды выполненные цели"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-medal"></i></span><span class="cmd-name">/achievements</span></div><div class="cmd-desc">твои достижения</div></div>
-                    <div class="cmd-entry" data-kw="упомянуть всех оповещение"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-bullhorn"></i></span><span class="cmd-name">@all</span></div><div class="cmd-desc">упомянуть всех (уровень 5+)</div></div>
+                    <div class="cmd-entry" data-kw="награды достижения ачивки топ"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-medal"></i></span><span class="cmd-name">/achievements [top]</span></div><div class="cmd-desc">твои достижения или топ</div></div>
                 </div>
             </div>
 
@@ -639,10 +730,10 @@
             <div class="command-category" style="--order:4" data-cat="lvl1" data-lvl="1" data-role="Кандидат">
                 <div class="category-title"><span class="cat-ico"><i class="fas fa-shield-hooded"></i></span>🛡 Кандидат (уровень 1+)<span class="cat-count"></span></div>
                 <div class="commands-grid">
-                    <div class="cmd-entry" data-kw="варн предупреждение наказание"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-exclamation-triangle"></i></span><span class="cmd-name">/warn @user причина</span></div><div class="cmd-desc">предупреждение (3 варна = бан)</div></div>
+                    <div class="cmd-entry" data-kw="варн предупреждение наказание 3 бан"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-exclamation-triangle"></i></span><span class="cmd-name">/warn @user причина</span></div><div class="cmd-desc">предупреждение (3 варна = бан на 5 дней)</div></div>
                     <div class="cmd-entry" data-kw="варны список предупреждений"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-eye"></i></span><span class="cmd-name">/warns @user</span></div><div class="cmd-desc">предупреждения пользователя</div></div>
-                    <div class="cmd-entry" data-kw="нарушения история жалоб"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-history"></i></span><span class="cmd-name">/history [@user]</span></div><div class="cmd-desc">история нарушений</div></div>
-                    <div class="cmd-entry" data-kw="активность сейчас в сети"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-circle-dot"></i></span><span class="cmd-name">/online</span></div><div class="cmd-desc">онлайн участников</div></div>
+                    <div class="cmd-entry" data-kw="нарушения история наказаний"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-history"></i></span><span class="cmd-name">/history [@user]</span></div><div class="cmd-desc">история нарушений и наказаний</div></div>
+                    <div class="cmd-entry" data-kw="смс удалить сообщение ответом"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-comment-slash"></i></span><span class="cmd-name">/sms (или /смс)</span></div><div class="cmd-desc">удалить сообщение ответом на него</div></div>
                 </div>
             </div>
 
@@ -650,9 +741,9 @@
             <div class="command-category" style="--order:5" data-cat="lvl2" data-lvl="2" data-role="Мл. модератор">
                 <div class="category-title"><span class="cat-ico"><i class="fas fa-hammer"></i></span>🔨 Мл. модератор (уровень 2+)<span class="cat-count"></span></div>
                 <div class="commands-grid">
-                    <div class="cmd-entry" data-kw="мут заглушить тишина timeout замутить"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-microphone-slash"></i></span><span class="cmd-name">/mute @user 10m причина</span></div><div class="cmd-desc">заглушить участника</div></div>
+                    <div class="cmd-entry" data-kw="мут заглушить тишина timeout замутить 10m 2h 1d"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-microphone-slash"></i></span><span class="cmd-name">/mute @user 10m причина</span></div><div class="cmd-desc">заглушить на 10m / 2h / 1d</div></div>
                     <div class="cmd-entry" data-kw="снять мут размутить вернуть голос unmute"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-microphone"></i></span><span class="cmd-name">/unmute @user</span></div><div class="cmd-desc">снять мут</div></div>
-                    <div class="cmd-entry" data-kw="кик выгнать исключить удалить участника"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-shoe-prints"></i></span><span class="cmd-name">/kick @user причина</span></div><div class="cmd-desc">выгнать из чата</div></div>
+                    <div class="cmd-entry" data-kw="кик выгнать исключить удалить участника"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-shoe-prints"></i></span><span class="cmd-name">/kick @user причина</span></div><div class="cmd-desc">выгнать из чата с подтверждением</div></div>
                 </div>
             </div>
 
@@ -660,27 +751,29 @@
             <div class="command-category" style="--order:6" data-cat="lvl3" data-lvl="3" data-role="Ст. модератор">
                 <div class="category-title"><span class="cat-ico"><i class="fas fa-skull"></i></span>⛔ Ст. модератор (уровень 3+)<span class="cat-count"></span></div>
                 <div class="commands-grid">
-                    <div class="cmd-entry" data-kw="бан забанить блокировка навсегда"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-ban"></i></span><span class="cmd-name">/ban @user [время] причина</span></div><div class="cmd-desc">заблокировать</div></div>
+                    <div class="cmd-entry" data-kw="бан забанить блокировка навсегда время"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-ban"></i></span><span class="cmd-name">/ban @user [время] причина</span></div><div class="cmd-desc">заблокировать навсегда или на время</div></div>
                     <div class="cmd-entry" data-kw="разбанить снять бан разблокировка"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-unlock"></i></span><span class="cmd-name">/unban @user</span></div><div class="cmd-desc">разблокировать</div></div>
                     <div class="cmd-entry" data-kw="снять варны очистить предупреждения"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-eraser"></i></span><span class="cmd-name">/clearwarns @user</span></div><div class="cmd-desc">очистить предупреждения</div></div>
-                    <div class="cmd-entry" data-kw="минус репутация понизить"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-thumbs-down"></i></span><span class="cmd-name">/unrep @user</span></div><div class="cmd-desc">снизить репутацию</div></div>
-                    <div class="cmd-entry" data-kw="флуд антиспам защита включить выключить"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-water"></i></span><span class="cmd-name">/antiflood_on / antiflood_off</span></div><div class="cmd-desc">защита от флуда</div></div>
-                    <div class="cmd-entry" data-kw="мат цензура фильтр слов"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-font"></i></span><span class="cmd-name">/antimat_on / antimat_off</span></div><div class="cmd-desc">фильтр мата</div></div>
-                    <div class="cmd-entry" data-kw="ссылки реклама блокировка"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-link"></i></span><span class="cmd-name">/antilink_on / antilink_off</span></div><div class="cmd-desc">блокировка ссылок</div></div>
-                    <div class="cmd-entry" data-kw="тишина режим ночь ограничение"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-moon"></i></span><span class="cmd-name">/silence</span></div><div class="cmd-desc">режим тишины</div></div>
+                    <div class="cmd-entry" data-kw="минус репутация понизить unrep"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-thumbs-down"></i></span><span class="cmd-name">/unrep @user</span></div><div class="cmd-desc">снизить репутацию на 1</div></div>
+                    <div class="cmd-entry" data-kw="флуд антиспам защита включить antiflood_on"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-water"></i></span><span class="cmd-name">/antiflood_on</span></div><div class="cmd-desc">включить защиту от флуда</div></div>
+                    <div class="cmd-entry" data-kw="флуд антиспам защита выключить antiflood_off"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-water"></i></span><span class="cmd-name">/antiflood_off</span></div><div class="cmd-desc">выключить защиту от флуда</div></div>
+                    <div class="cmd-entry" data-kw="мат цензура фильтр слов включить antimat_on"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-font"></i></span><span class="cmd-name">/antimat_on</span></div><div class="cmd-desc">включить фильтр мата</div></div>
+                    <div class="cmd-entry" data-kw="мат цензура фильтр слов выключить antimat_off"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-font"></i></span><span class="cmd-name">/antimat_off</span></div><div class="cmd-desc">выключить фильтр мата</div></div>
+                    <div class="cmd-entry" data-kw="ссылки реклама блокировка включить antilink_on"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-link"></i></span><span class="cmd-name">/antilink_on</span></div><div class="cmd-desc">включить блокировку ссылок</div></div>
+                    <div class="cmd-entry" data-kw="ссылки реклама блокировка выключить antilink_off"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-link"></i></span><span class="cmd-name">/antilink_off</span></div><div class="cmd-desc">выключить блокировку ссылок</div></div>
                 </div>
             </div>
 
             <!-- Уровень 4+ -->
-            <div class="command-category" style="--order:7" data-cat="lvl4" data-lvl="4" data-role="Администратор">
-                <div class="category-title"><span class="cat-ico"><i class="fas fa-bolt"></i></span>⚡ Администратор (уровень 4+)<span class="cat-count"></span></div>
+            <div class="command-category" style="--order:7" data-cat="lvl4" data-lvl="4" data-role="Зам. руководителя">
+                <div class="category-title"><span class="cat-ico"><i class="fas fa-bolt"></i></span>⚡ Зам. руководителя (уровень 4+)<span class="cat-count"></span></div>
                 <div class="commands-grid">
-                    <div class="cmd-entry" data-kw="выдать права назначить админа роль"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-user-shield"></i></span><span class="cmd-name">/setadmin @user уровень (0-5)</span></div><div class="cmd-desc">назначить/снять администратора</div></div>
-                    <div class="cmd-entry" data-kw="заморозка ограничить админа"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-snowflake"></i></span><span class="cmd-name">/freeze @user</span></div><div class="cmd-desc">заморозить администратора</div></div>
-                    <div class="cmd-entry" data-kw="разморозка вернуть доступ"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-temperature-high"></i></span><span class="cmd-name">/unfreeze @user</span></div><div class="cmd-desc">разморозить</div></div>
-                    <div class="cmd-entry" data-kw="правила написать изменить установить"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-edit"></i></span><span class="cmd-name">/rules set текст</span></div><div class="cmd-desc">установить правила чата</div></div>
-                    <div class="cmd-entry" data-kw="правила удалить стереть"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-trash"></i></span><span class="cmd-name">/rules del</span></div><div class="cmd-desc">удалить правила</div></div>
-                    <div class="cmd-entry" data-kw="рейд защита тревога"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-shield-virus"></i></span><span class="cmd-name">/antiraid</span></div><div class="cmd-desc">активировать антирейд</div></div>
+                    <div class="cmd-entry" data-kw="выдать права назначить админа роль уровень 0-5"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-user-shield"></i></span><span class="cmd-name">/setadmin @user уровень (0-5)</span></div><div class="cmd-desc">назначить или снять администратора</div></div>
+                    <div class="cmd-entry" data-kw="заморозка ограничить админа freeze"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-snowflake"></i></span><span class="cmd-name">/freeze @user причина</span></div><div class="cmd-desc">заморозить администратора</div></div>
+                    <div class="cmd-entry" data-kw="разморозка вернуть доступ unfreeze"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-temperature-high"></i></span><span class="cmd-name">/unfreeze @user</span></div><div class="cmd-desc">разморозить администратора</div></div>
+                    <div class="cmd-entry" data-kw="правила написать изменить установить rules set"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-edit"></i></span><span class="cmd-name">/rules set текст</span></div><div class="cmd-desc">установить правила чата</div></div>
+                    <div class="cmd-entry" data-kw="правила удалить стереть rules del"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-trash"></i></span><span class="cmd-name">/rules del</span></div><div class="cmd-desc">удалить правила</div></div>
+                    <div class="cmd-entry" data-kw="рейд защита тревога antiraid"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-shield-virus"></i></span><span class="cmd-name">/antiraid</span></div><div class="cmd-desc">включить или выключить антирейд</div></div>
                 </div>
             </div>
 
@@ -688,9 +781,25 @@
             <div class="command-category" style="--order:8" data-cat="lvl5" data-lvl="5" data-role="Руководитель">
                 <div class="category-title"><span class="cat-ico"><i class="fas fa-crown"></i></span>👑 Руководитель (уровень 5+)<span class="cat-count"></span></div>
                 <div class="commands-grid">
-                    <div class="cmd-entry" data-kw="упомянуть всех оповещение рассылка"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-bullhorn"></i></span><span class="cmd-name">@all текст</span></div><div class="cmd-desc">упомянуть всех участников чата</div></div>
-                    <div class="cmd-entry" data-kw="отключить команду запретить выключить disable uncommand"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-toggle-off"></i></span><span class="cmd-name">/uncommand команда</span></div><div class="cmd-desc">отключить команду в чате (доступно с 5 lvl)</div></div>
-                    <div class="cmd-entry" data-kw="включить команду разрешить вернуть enable encommand"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-toggle-on"></i></span><span class="cmd-name">/encommand команда</span></div><div class="cmd-desc">включить команду обратно (доступно с 5 lvl)</div></div>
+                    <div class="cmd-entry" data-kw="упомянуть всех оповещение рассылка all"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-bullhorn"></i></span><span class="cmd-name">@all текст</span></div><div class="cmd-desc">упомянуть всех участников чата</div></div>
+                    <div class="cmd-entry" data-kw="отключить команду запретить выключить disable uncommand"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-toggle-off"></i></span><span class="cmd-name">/uncommand команда</span></div><div class="cmd-desc">отключить команду в чате</div></div>
+                    <div class="cmd-entry" data-kw="включить команду разрешить вернуть enable encommand"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-toggle-on"></i></span><span class="cmd-name">/encommand команда</span></div><div class="cmd-desc">включить команду обратно</div></div>
+                    <div class="cmd-entry" data-kw="отключенные команды список listcommands"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-list-check"></i></span><span class="cmd-name">/listcommands</span></div><div class="cmd-desc">список отключённых команд</div></div>
+                    <div class="cmd-entry" data-kw="чат модераторов жалобы setmodchat"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-comments"></i></span><span class="cmd-name">/setmodchat ID_чата</span></div><div class="cmd-desc">установить чат для жалоб</div></div>
+                    <div class="cmd-entry" data-kw="капча проверка новички включить captcha_on"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-robot"></i></span><span class="cmd-name">/captcha_on</span></div><div class="cmd-desc">включить проверку новичков</div></div>
+                    <div class="cmd-entry" data-kw="капча проверка новички выключить captcha_off"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-user-check"></i></span><span class="cmd-name">/captcha_off</span></div><div class="cmd-desc">выключить проверку новичков</div></div>
+                </div>
+            </div>
+
+            <!-- Разработчик -->
+            <div class="command-category" style="--order:9" data-cat="dev" data-role="Разработчик">
+                <div class="category-title"><span class="cat-ico"><i class="fas fa-terminal"></i></span>🛠 Разработчик<span class="cat-count"></span></div>
+                <div class="commands-grid">
+                    <div class="cmd-entry" data-kw="меню разработчика панель dev"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-code"></i></span><span class="cmd-name">/dev</span></div><div class="cmd-desc">меню разработчика</div></div>
+                    <div class="cmd-entry" data-kw="черный список чат добавить выйти ch"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-door-closed"></i></span><span class="cmd-name">/ch ID_чата</span></div><div class="cmd-desc">добавить чат в ЧС и выйти</div></div>
+                    <div class="cmd-entry" data-kw="черный список чат убрать unch"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-door-open"></i></span><span class="cmd-name">/unch ID_чата</span></div><div class="cmd-desc">убрать чат из ЧС</div></div>
+                    <div class="cmd-entry" data-kw="черный список чатов blacklist"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-list"></i></span><span class="cmd-name">/blacklist</span></div><div class="cmd-desc">показать чёрный список чатов</div></div>
+                    <div class="cmd-entry" data-kw="рассылка сообщение все чаты grup"><div class="cmd-head"><span class="cmd-ico"><i class="fas fa-bullhorn"></i></span><span class="cmd-name">/grup текст</span></div><div class="cmd-desc">рассылка по всем чатам</div></div>
                 </div>
             </div>
 
@@ -702,7 +811,10 @@
 
             <div style="background:rgba(10,15,28,0.8);border-radius:28px;padding:20px;margin-top:24px;">
                 <p><i class="fas fa-info-circle"></i> 💡 Ответь на сообщение и напиши команду, или используй /команда @username. Для @all просто напиши текст в чате!</p>
+                <p style="margin-top:12px;"><i class="fas fa-comment-slash"></i> Удалить сообщение без мута: ответь на него и отправь <b>/sms</b> или <b>/смс</b>.</p>
+                <p style="margin-top:12px;"><i class="fas fa-flag"></i> Жалоба уходит в чат модераторов: <b>/report причина</b>. Админы настраивают его через <b>/setmodchat ID</b>.</p>
                 <p style="margin-top:12px;"><i class="fas fa-power-off"></i> 👑 Руководитель (5 lvl) может отключать и включать команды: <b>/uncommand команда</b> — выключить, <b>/encommand команда</b> — включить обратно.</p>
+                <p style="margin-top:12px;">🛠 Команды разработчика видны в отдельной категории и доступны только разработчикам.</p>
                 <p style="margin-top:12px;">✨ С теплом, твой бот-помощник ❤️</p>
             </div>
         </div>
@@ -711,10 +823,11 @@
     <!-- FEATURES -->
     <div id="moderation" class="container">
         <div class="features-grid">
-            <div class="feature-card"><i class="fas fa-robot" style="font-size:2rem;color:#818cf8;"></i><h3 style="margin:16px 0 8px;">AI-антиспам</h3><p>Нейросеть определяет рекламу, флуд, повторяющиеся сообщения. Защита от масс-упоминаний и капча при входе.</p></div>
-            <div class="feature-card"><i class="fas fa-smile-wink" style="font-size:2rem;color:#f472b6;"></i><h3 style="margin:16px 0 8px;">Фильтр токсичности</h3><p>Удаляет мат, оскорбления, травлю на 20+ языках. Настраиваемая строгость и исключения.</p></div>
-            <div class="feature-card"><i class="fas fa-chart-line" style="font-size:2rem;color:#10b981;"></i><h3 style="margin:16px 0 8px;">Статистика & аудит</h3><p>Логи действий, графики нарушений, отчёты для админов — полный контроль над порядком.</p></div>
-            <div class="feature-card"><i class="fas fa-dice-d20" style="font-size:2rem;color:#f59e0b;"></i><h3 style="margin:16px 0 8px;">Игровая платформа</h3><p>Казино, кости, свадьбы, репутация, кланы — вовлекайте участников в активное общение.</p></div>
+            <div class="feature-card"><i class="fas fa-robot" style="font-size:2rem;color:#818cf8;"></i><h3 style="margin:16px 0 8px;">Умная защита</h3><p>Антифлуд, антимат, антиссылки, антирейд и капча для новичков. Бот сам следит за порядком и предупреждает нарушения.</p></div>
+            <div class="feature-card"><i class="fas fa-smile-wink" style="font-size:2rem;color:#f472b6;"></i><h3 style="margin:16px 0 8px;">Фильтр токсичности</h3><p>Удаляет мат и оскорбления, включая обходные написания. Настраивается командами антимата и варнами.</p></div>
+            <div class="feature-card"><i class="fas fa-chart-line" style="font-size:2rem;color:#10b981;"></i><h3 style="margin:16px 0 8px;">Статистика и аудит</h3><p>История наказаний, варны, топ активности и полный лог действий модераторов — всё под контролем.</p></div>
+            <div class="feature-card"><i class="fas fa-dice-d20" style="font-size:2rem;color:#f59e0b;"></i><h3 style="margin:16px 0 8px;">Игровая платформа</h3><p>Рулетка с джекпотом, кости, монетка, RPS, угадай число и ежедневная игра — вовлекайте участников.</p></div>
+            <div class="feature-card"><i class="fas fa-comments" style="font-size:2rem;color:#2dd4bf;"></i><h3 style="margin:16px 0 8px;">AI-помощник</h3><p>Большая база знаний о боте и сайте. Спроси о командах, уровнях, играх, VIP или настройках — ответит мгновенно.</p><button class="btn-outline" type="button" data-ai-open style="margin-top:14px;"><i class="fas fa-robot"></i> Открыть чат</button></div>
         </div>
     </div>
 
@@ -727,7 +840,7 @@
             <p style="max-width:600px;margin:0 auto 24px;">Создатель ChatCleanser, эксперт по безопасности и архитектор AI-модерации. Лично сопровождает интеграцию крупных сообществ и всегда на связи.</p>
             <div style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;">
                 <a href="https://t.me/sotaop" target="_blank" class="btn-primary"><i class="fab fa-telegram"></i> Написать админу</a>
-                <a href="https://t.me/ChatCleanser_bot" target="_blank" class="btn-outline"><i class="fas fa-headset"></i> Поддержка бота</a>
+                <a href="https://t.me/unitydevs3" target="_blank" class="btn-outline"><i class="fas fa-headset"></i> Поддержка бота</a>
             </div>
             <div class="hash-badge" style="margin-top:28px;display:inline-block;"><i class="fas fa-hashtag"></i> администратор → #admin-team</div>
         </div>
@@ -745,14 +858,42 @@
 </main>
 
 <footer class="footer container">
-    <p>© 2025 ChatCleanser — умная модерация и игры. Связь: @sotaop 24/7 ❤️</p>
+    <p>© 2026 ChatCleanser — умная модерация и игры. Связь: @sotaop · Поддержка: @unitydevs3 24/7 ❤️</p>
     <p style="margin-top:12px;"><i class="fas fa-magic"></i> Используй /help в чате или переходи по ссылкам: <strong>#commands</strong> — все команды | <strong>#moderation</strong> — инструменты модерации</p>
 </footer>
 
+<button id="ai-fab" type="button" aria-label="Открыть AI-помощника" aria-expanded="false" aria-controls="ai-panel">
+    <i class="fas fa-robot"></i>
+    <span class="ai-fab-dot"></span>
+</button>
+
+<section id="ai-panel" aria-hidden="true" aria-label="AI-помощник ChatCleanser">
+    <header class="ai-head">
+        <div class="ai-head-info">
+            <div class="ai-avatar"><i class="fas fa-robot"></i></div>
+            <div>
+                <strong>AI-помощник</strong>
+                <span><i class="ai-dot"></i> онлайн · база знаний</span>
+            </div>
+        </div>
+        <div class="ai-head-actions">
+            <button id="ai-clear" type="button" title="Очистить чат" aria-label="Очистить чат"><i class="fas fa-broom"></i></button>
+            <button id="ai-close" type="button" title="Закрыть" aria-label="Закрыть"><i class="fas fa-times"></i></button>
+        </div>
+    </header>
+    <div id="ai-messages" class="ai-messages" aria-live="polite"></div>
+    <div id="ai-suggest" class="ai-suggest"></div>
+    <form id="ai-form" class="ai-form">
+        <input id="ai-input" type="text" placeholder="Спроси о командах, играх, модерации…" autocomplete="off" maxlength="300">
+        <button type="submit" aria-label="Отправить"><i class="fas fa-paper-plane"></i></button>
+    </form>
+    <div class="ai-foot">Локальная база знаний · без API и слежки</div>
+</section>
+
 <script>
-    // ══════════════════════════════════════════
+    // ═════════════════════════════════════════════
     // PARTICLES — с соединительными линиями
-    // ══════════════════════════════════════════
+    // ═════════════════════════════════════════════
     const canvas = document.getElementById('particlesCanvas');
     const ctx = canvas.getContext('2d');
     let width = window.innerWidth, height = window.innerHeight;
@@ -840,18 +981,18 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas(); drawParticles();
 
-    // ══════════════════════════════════════════
+    // ═════════════════════════════════════════════
     // PROGRESS BAR
-    // ══════════════════════════════════════════
+    // ════════════════════════════════════════════
     const progressBar = document.getElementById('progress-bar');
     function updateProgress() {
         const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
         progressBar.style.width = Math.min(pct, 100) + '%';
     }
 
-    // ══════════════════════════════════════════
+    // ═════════════════════════════════════════════
     // INTERSECTION OBSERVER — анимации при скролле
-    // ══════════════════════════════════════════
+    // ═════════════════════════════════════════════
     const ioOptions = { threshold: 0.08, rootMargin: '0px 0px -40px 0px' };
 
     // Reveal для секций
@@ -934,9 +1075,9 @@
     }, { threshold: 0.3 });
     document.querySelectorAll('.hero-stats').forEach(el => statsObs.observe(el));
 
-    // ══════════════════════════════════════════
+    // ═════════════════════════════════════════════
     // SCROLL HANDLER — без parallax на контент
-    // ══════════════════════════════════════════
+    // ═════════════════════════════════════════════
     function handleScroll() {
         updateProgress();
         document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 300);
@@ -944,16 +1085,16 @@
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
 
-    // ══════════════════════════════════════════
+    // ═════════════════════════════════════════════
     // BACK TO TOP
-    // ══════════════════════════════════════════
+    // ═════════════════════════════════════════════
     document.getElementById('back-to-top').addEventListener('click', () =>
         window.scrollTo({ top: 0, behavior: 'smooth' })
     );
 
-    // ══════════════════════════════════════════
+    // ═════════════════════════════════════════════
     // COMMAND SEARCH + FILTERS
-    // ══════════════════════════════════════════
+    // ═════════════════════════════════════════════
     const searchInput  = document.getElementById('cmd-search');
     const searchCount  = document.getElementById('search-count');
     const searchClear  = document.getElementById('search-clear');
@@ -965,45 +1106,68 @@
 
     // Ключевые слова: команда → дополнительные слова для поиска
     const KEYWORDS = {
-        'start':     'запуск приветствие начало',
-        'help':      'помощь команды справка список',
-        'profile':   'профиль карточка статистика игрока',
-        'balance':   'очки деньги баланс коины',
-        'daily':     'бонус ежедневный награда',
-        'transfer':  'перевод отправить очки другу',
-        'shop':      'магазин покупки торговля',
-        'inventory': 'инвентарь вещи предметы рюкзак',
-        'vip':       'премиум подписка привилегии',
-        'rules':     'правила регламент законы',
-        'staff':     'админы модераторы персонал',
-        'chatstats': 'статистика топ активность',
-        'report':    'жалоба репорт пожаловаться',
-        'calladmin': 'вызвать модератора помощь',
-        'mute':      'мут заглушить тишина timeout замутить флуд',
-        'unmute':    'снять мут размутить вернуть голос',
-        'kick':      'кик выгнать исключить',
-        'ban':       'бан забанить блокировка навсегда',
-        'unban':     'разбанить снять бан разблокировка',
-        'warn':      'варн предупреждение наказание',
-        'warns':     'варны предупреждения список',
-        'clearwarns': 'снять варны очистить нарушения',
-        'rep':       'репутация рейтинг плюс',
-        'unrep':     'минус репутация понизить',
-        'top':       'топ лидерборд рейтинг',
-        'game':      'игра угадай число мини-игра',
-        'casino':    'казино ставки азарт',
-        'clan':      'клан гильдия команда create join leave info top',
-        'silence':   'тишина режим ночь',
-        'antiflood': 'флуд защита антиспам',
-        'antimat':   'мат цензура фильтр слов',
-        'antilink':  'ссылки реклама блокировка',
-        'setadmin':  'выдать права назначить админа роль',
-        'freeze':    'заморозка ограничить админа',
-        'unfreeze':  'разморозка вернуть доступ',
-        'antiraid':  'рейд защита тревога',
-        'all':       'упомянуть всех оповещение рассылка',
-        'uncommand': 'отключить команду запретить выключить disable выкл',
-        'encommand': 'включить команду разрешить вернуть enable вкл'
+        'start':        'запуск приветствие начало',
+        'help':         'помощь команды справка руководство сайт поддержка',
+        'profile':      'профиль карточка статистика наказания рулетка репутация',
+        'id':           'айди идентификатор юзер чат',
+        'balance':      'очки деньги баланс коины',
+        'daily':        'бонус ежедневный награда 10',
+        'transfer':     'перевод отправить очки другу',
+        'shop':         'магазин покупки торговля товары',
+        'buy':          'купить приобрести товар vip',
+        'inventory':    'инвентарь вещи предметы рюкзак',
+        'vip':          'премиум подписка привилегии иммунитет статус',
+        'rules':        'правила регламент законы',
+        'staff':        'админы модераторы персонал состав',
+        'chatstats':    'статистика топ активность сообщения',
+        'report':       'жалоба репорт пожаловаться модераторы',
+        'achievements': 'достижения награды ачивки топ',
+        'game':         'игра угадай число мини-игра 50',
+        'roulette':     'рулетка ставка джекпот казино зеро красное черное',
+        'roulette_stats': 'статистика рулетки джекпот победы',
+        'rps':          'камень ножницы бумага',
+        'coin':         'монетка орел решка',
+        'dice':         'кости кубики бросок',
+        'dick':         'писька размер игра',
+        'top':          'топ размеры рейтинг лидерборд',
+        'rep':          'репутация рейтинг плюс',
+        'repstats':     'репутация топ рейтинг',
+        'friend':       'друг друзья добавить',
+        'unfriend':     'удалить друг',
+        'friends':      'друзья список',
+        'warn':         'варн предупреждение наказание',
+        'warns':        'варны предупреждения список',
+        'history':      'история нарушений наказаний',
+        'sms':          'смс удалить сообщение',
+        'mute':         'мут заглушить тишина timeout замутить',
+        'unmute':       'снять мут размутить',
+        'kick':         'кик выгнать исключить',
+        'ban':          'бан забанить блокировка',
+        'unban':        'разбанить разблокировать',
+        'clearwarns':   'снять варны очистить предупреждения',
+        'unrep':        'минус репутация понизить',
+        'antiflood_on': 'флуд антиспам включить',
+        'antiflood_off': 'флуд антиспам выключить',
+        'antimat_on':   'мат цензура включить',
+        'antimat_off':  'мат цензура выключить',
+        'antilink_on':  'ссылки реклама включить',
+        'antilink_off': 'ссылки реклама выключить',
+        'setadmin':     'выдать права назначить админа роль уровень',
+        'freeze':       'заморозка заморозить админ',
+        'unfreeze':     'разморозка разморозить',
+        'antiraid':     'рейд защита тревога',
+        '@all':         'упомянуть всех оповещение рассылка',
+        'uncommand':    'отключить команду выключить disable',
+        'encommand':    'включить команду enable',
+        'listcommands': 'отключенные команды список',
+        'setmodchat':   'чат модераторов жалобы',
+        'captcha_on':   'капча проверка новички включить',
+        'captcha_off':  'капча проверка новички выключить',
+        'dev':          'разработчик меню панель',
+        'ch':           'черный список чат добавить выйти',
+        'unch':         'черный список чат убрать',
+        'blacklist':    'черный список чатов',
+        'grup':         'рассылка все чаты'
     };
 
     const escHtml = s => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
@@ -1150,6 +1314,1196 @@
     });
 
     applyFilter();
+</script>
+<script>
+(function () {
+    'use strict';
+
+    const KB = [
+        {
+            q: 'Что такое ChatCleanser?',
+            t: 'chatcleanser что такое бот описание информация',
+            a: '**ChatCleanser** — Telegram-бот для модерации и развлечений.\n\nОн следит за порядком в чате, выдаёт наказания, проверяет новичков капчей, ведёт статистику и развлекает участников играми.\n\nБот: https://t.me/ChatCleanser_bot\nСайт-руководство: http://chatcleanser.duckdns.org/'
+        },
+        {
+            q: 'Как добавить бота в группу?',
+            t: 'добавить бот группа пригласить установить подключить',
+            a: 'Добавить бота просто:\n\n1. Открой https://t.me/ChatCleanser_bot\n2. Нажми «Добавить в группу» и выбери свой чат.\n3. Выдай боту права администратора: удалять сообщения, блокировать и ограничивать участников.\n4. Напиши в чате `/start` или `/help`.\n\nТот, кто добавил бота, автоматически получает уровень 5 (Руководитель).'
+        },
+        {
+            q: 'Какие права нужны боту?',
+            t: 'права боту администратор разрешения удалять блокировать ограничивать',
+            a: 'Для полноценной работы боту нужны права администратора:\n\n• Удалять сообщения — для антимата, антиссылок и `/sms`.\n• Блокировать участников — для `/ban`, `/kick`, `/mute`.\n• Ограничивать участников — для мута и капчи.\n• Приглашать по ссылке — желательно для капчи.\n\nБез этих прав часть команд вернёт ошибку.'
+        },
+        {
+            q: 'Бот бесплатный?',
+            t: 'бесплатно платно цена стоимость деньги',
+            a: 'Да, ChatCleanser бесплатный. Нет обязательной подписки и скрытых платежей.\n\nВнутри бота есть очки, магазин и VIP-статусы — это игровая экономика. Очки зарабатываются в играх и ежедневном бонусе, реальные деньги за них не нужны.'
+        },
+        {
+            q: 'Нужен ли API-ключ?',
+            t: 'api ключ токен openai нейросеть',
+            a: 'Нет. Бот работает на своём сервере и не требует API-ключей.\n\nAI-помощник на этом сайте тоже работает локально: ответы берутся из встроенной базы знаний в браузере. Никакие ключи не нужны, данные никуда не отправляются.'
+        },
+        {
+            q: 'Как настроить бота с нуля?',
+            t: 'настройка настроить установка старт с нуля',
+            a: 'Быстрый старт:\n\n1. Добавь бота в группу и выдай права администратора.\n2. Назначь команду: `/setadmin @user 1` … `/setadmin @user 4`.\n3. Задай правила: `/rules set текст правил`.\n4. Настрой чат жалоб: `/setmodchat ID_чата`.\n5. Включи защиту: `/antiflood_on`, `/antimat_on`, `/antilink_on`, `/captcha_on`.\n6. Проверь состав: `/staff`.\n\nПодробнее — в разделе #commands на сайте.'
+        },
+        {
+            q: 'Как стать администратором бота?',
+            t: 'стать админом администратором получить права назначить',
+            a: 'Администратора назначает тот, у кого есть уровень 4+:\n\n`/setadmin @user 1` — Кандидат\n`/setadmin @user 2` — Мл. модератор\n`/setadmin @user 3` — Ст. модератор\n`/setadmin @user 4` — Зам. руководителя\n`/setadmin @user 5` — Руководитель\n`/setadmin @user 0` — снять права\n\nНельзя выдать уровень выше своего. Пригласивший бота получает уровень 5 автоматически.'
+        },
+        {
+            q: 'Какие уровни администраторов?',
+            t: 'уровни админов роли иерархия 1 2 3 4 5 6',
+            a: 'Уровни доступа:\n\n1 — 📋 Кандидат: варны, история, `/sms`.\n2 — 🔨 Мл. модератор: мут, размут, кик.\n3 — 🛡 Ст. модератор: бан, разбан, очистка варнов, антифлуд/антимат/антиссылки.\n4 — 🔰 Зам. руководителя: назначение админов, заморозка, правила, антирейд.\n5 — ⚜ Руководитель: `@all`, отключение команд, чат жалоб, капча.\n6 — 👑 Владелец: высший уровень в чате.\n\nКоманды уровня N доступны и всем уровням выше.'
+        },
+        {
+            q: 'Как получить 6 уровень?',
+            t: '6 уровень владелец получить выдать админка',
+            a: '6 уровень (👑 Владелец) — высший уровень в чате. Его может выдать только разработчик через меню `/dev` → «Выдать админку 6 уровень».\n\nОбычный `/setadmin` работает с уровнями 0–5. Если 6 уровень нужен для чата, напиши @sotaop.'
+        },
+        {
+            q: 'Что умеет бот?',
+            t: 'возможности умеет функции что может',
+            a: 'ChatCleanser умеет:\n\n• Модерировать: варны, муты, баны, кики, очистка варнов.\n• Защищать: антифлуд, антимат, антиссылки, антирейд, капча.\n• Вести экономику: очки, ежедневный бонус, переводы, магазин, VIP.\n• Развлекать: рулетка, RPS, кости, монетка, угадай число, `/dick`.\n• Собирать статистику: `/chatstats`, `/repstats`, `/top`, `/history`.\n• Давать достижения и репутацию.\n• Управлять чатом: правила, чат жалоб, отключение команд.'
+        },
+        {
+            q: 'Как связаться с поддержкой?',
+            t: 'поддержка связаться помощь человек контакт',
+            a: 'Поддержка бота: @unitydevs3\nСоздатель и главный администратор: @sotaop\n\nПеред обращением проверь `/help` и раздел #commands — возможно, ответ уже есть. Если проблема техническая, приложи скриншот и ID чата.'
+        },
+        {
+            q: 'Кто создал бота?',
+            t: 'создатель автор кто сделал',
+            a: 'Создатель ChatCleanser — @sotaop. Он же главный технический администратор проекта.\n\nПо вопросам поддержки можно писать @unitydevs3. Сайт-руководство: http://chatcleanser.duckdns.org/'
+        },
+        {
+            q: 'Кто такой разработчик?',
+            t: 'разработчик девелопер права доступ кто такой',
+            a: 'Разработчик — пользователь из списка разработчиков бота. Он видит `/dev` и dev-команды: `/ch`, `/unch`, `/blacklist`, `/grup`.\n\nОбычные администраторы чата, даже с уровнем 5, не являются разработчиками. Создатель проекта — @sotaop.'
+        },
+        {
+            q: 'Как стать разработчиком?',
+            t: 'стать разработчиком девелопером получить доступ помочь разработка',
+            a: 'Разработчик — техническая роль, её назначает создатель проекта. Через `/setadmin` её получить нельзя: эта команда работает только с уровнями 0–5 внутри чата.\n\nЕсли хочешь помочь с разработкой или сообщить о баге, напиши @sotaop или в поддержку @unitydevs3.'
+        },
+        {
+            q: 'Где руководство по боту?',
+            t: 'руководство сайт документация гайд помощь',
+            a: 'Полное руководство находится на сайте:\nhttp://chatcleanser.duckdns.org/\n\nТам есть все команды с поиском и фильтрами, описание модерации, игр и VIP. В Telegram также работает команда `/help`.'
+        },
+        {
+            q: 'Бот не отвечает на команды',
+            t: 'не отвечает молчит не работает бот',
+            a: 'Проверь по порядку:\n\n1. Бот добавлен именно в этот чат?\n2. У бота есть права администратора?\n3. Команда не отключена? Проверь `/listcommands`.\n4. Не сработал кулдаун 3 секунды?\n5. Команда написана правильно и с нужным уровнем доступа?\n\nЕсли ничего не помогло — напиши @unitydevs3 и приложи ID чата.'
+        },
+        {
+            q: 'Почему команда отключена?',
+            t: 'команда отключена disabled не работает uncommand',
+            a: 'Команду мог отключить руководитель через `/uncommand имя_команды`.\n\nПосмотреть список отключённых: `/listcommands`.\nВключить обратно: `/encommand имя_команды`.\n\nОбе команды доступны с уровня 5.'
+        },
+        {
+            q: 'Почему бот удаляет сообщения?',
+            t: 'удаляет сообщения антимат антиссылки флуд',
+            a: 'Скорее всего, включена защита:\n\n• `/antimat_on` — удаляет мат и оскорбления.\n• `/antilink_on` — удаляет ссылки и рекламу.\n• `/antiflood_on` — реагирует на флуд.\n\nОтключить можно соответствующими командами `_off` с уровня 3. Если сообщение удалил модератор, это будет видно в `/history`.'
+        },
+        {
+            q: 'Где хранятся данные бота?',
+            t: 'данные база данных хранение приватность',
+            a: 'Бот хранит данные в SQLite-базе `bot.db` на сервере: профили, очки, репутацию, варны, достижения, статистику и журнал модерации.\n\nAI-помощник на сайте не отправляет твои сообщения на сервер: он работает полностью в браузере по локальной базе знаний.'
+        },
+        {
+            q: 'Бот работает в личных сообщениях?',
+            t: 'личка лс приватный чат',
+            a: 'В личке с ботом доступны `/start`, `/help` и базовые команды. Модерация, капча и админские команды рассчитаны на группы.\n\nДля игр и экономики лучше использовать группу, где бот уже настроен.'
+        },
+        {
+            q: 'Как обновить бота?',
+            t: 'обновить обновление версия',
+            a: 'Обновлением занимается разработчик. Пользователям ничего делать не нужно: бот работает на сервере.\n\nЕсли бот завис или не отвечает, напиши @unitydevs3. Перезапуск через `/dev` доступен только разработчикам.'
+        },
+        {
+            q: 'Что за сайт chatcleanser.duckdns.org?',
+            t: 'сайт сайт бота ссылка',
+            a: 'Это официальное руководство по ChatCleanser:\nhttp://chatcleanser.duckdns.org/\n\nНа сайте есть список всех команд с поиском, описание модерации, игр, VIP и AI-помощник, который отвечает по локальной базе знаний.'
+        },
+        {
+            q: 'Бот поддерживает русский язык?',
+            t: 'язык русский английский',
+            a: 'Интерфейс бота и ответы — на русском. Сами команды пишутся латиницей, например `/mute`, но у `/смс` есть русский аналог.\n\nСловарь антимата можно расширять через файл `bad_words.json` на сервере.'
+        },
+
+        {
+            q: 'Команда /start',
+            t: 'start старт запуск',
+            a: '`/start` — запуск бота и приветствие. В группе регистрирует чат, в личке показывает основную информацию.\n\nПосле добавления бота в группу начни с `/start` или `/help`.'
+        },
+        {
+            q: 'Команда /help',
+            t: 'help помощь справка',
+            a: '`/help` — помощь и ссылка на руководство.\n\nВ личке бот отправит ссылку на сайт и контакт поддержки @unitydevs3; разработчикам дополнительно покажет dev-команды. В группе — ссылку на сайт и контакт поддержки.'
+        },
+        {
+            q: 'Команда /profile',
+            t: 'profile профиль',
+            a: '`/profile [@user]` — профиль участника.\n\nПоказывает ID, имя, роль, VIP-статус, личный тэг, репутацию, очки, варны и достижения. У себя и у администраторов есть кнопки «Наказания» и «Статистика рулетки».\n\nМожно ответить на сообщение и написать `/profile` или указать `@username`.'
+        },
+        {
+            q: 'Команда /id',
+            t: 'id айди идентификатор',
+            a: '`/id [@user]` — узнать ID пользователя или чата.\n\nБез аргумента покажет твой ID и ID текущего чата. Пригодится для `/setmodchat`, `/ch` и обращения в поддержку.'
+        },
+        {
+            q: 'Команда /balance',
+            t: 'balance баланс очки',
+            a: '`/balance` — проверить баланс очков.\n\nОчки начисляются за `/daily`, игры и достижения. Тратить их можно в `/shop` и на VIP-статусы.'
+        },
+        {
+            q: 'Команда /daily',
+            t: 'daily ежедневный бонус 10',
+            a: '`/daily` — ежедневный бонус: **+10 очков** раз в день.\n\nЕсли уже получал сегодня — бот попросит прийти завтра. Сброс происходит по дате сервера.'
+        },
+        {
+            q: 'Команда /transfer',
+            t: 'transfer перевод',
+            a: '`/transfer @user сумма` — перевести очки другому участнику.\n\nПример: `/transfer @friend 100`.\n\nНельзя переводить себе, каналам и чатам. Комиссии нет, но баланс должен быть достаточным.'
+        },
+        {
+            q: 'Команда /shop',
+            t: 'shop магазин',
+            a: '`/shop` — магазин.\n\nПоказывает обычные товары и VIP-статусы с ценами. Купить можно через `/buy номер` или `/buy vip1` … `/buy vip5`.\n\nТовары попадают в `/inventory`.'
+        },
+        {
+            q: 'Команда /buy',
+            t: 'buy купить',
+            a: '`/buy [номер]` — купить товар из магазина.\n`/buy vip1` … `/buy vip5` — купить VIP-статус.\n\nПримеры: `/buy 1`, `/buy 4`, `/buy vip3`.\n\nЕсли не хватает очков, бот покажет нужную сумму.'
+        },
+        {
+            q: 'Команда /inventory',
+            t: 'inventory инвентарь',
+            a: '`/inventory` — твой инвентарь покупок.\n\nПоказывает последние купленные товары. Личный тэг и VIP работают сразу после покупки, остальные предметы — по назначению.'
+        },
+        {
+            q: 'Команда /vip',
+            t: 'vip вип статус',
+            a: '`/vip` — VIP-статус и привилегии.\n\nВсего 5 уровней: Премиум, Премиум+, Платинум, Платинум+ и Алмаз. Чем выше уровень, тем больше иммунитетов к наказаниям.\n\nКупить: `/buy vip1` … `/buy vip5`.'
+        },
+        {
+            q: 'Команда /rules',
+            t: 'rules правила',
+            a: '`/rules` — показать правила чата.\n\nУстановить или изменить правила может уровень 4+:\n`/rules set текст правил`\nУдалить: `/rules del`.\n\nЕсли правила не заданы, бот сообщит об этом.'
+        },
+        {
+            q: 'Команда /staff',
+            t: 'staff админы состав',
+            a: '`/staff` — список администраторов чата.\n\nПоказывает уровень и роль каждого, а также значок ❄️, если админ заморожен. Удобно для проверки состава после `/setadmin`.'
+        },
+        {
+            q: 'Команда /chatstats',
+            t: 'chatstats статистика топ активность чат сообщения',
+            a: '`/chatstats` — топ-10 самых активных участников чата по количеству сообщений.\n\nСтатистика ведётся отдельно для каждого чата.'
+        },
+        {
+            q: 'Команда /report',
+            t: 'report жалоба',
+            a: '`/report причина` — отправить жалобу в чат модераторов.\n\nПример: `/report спам`. Ответ на сообщение не обязателен. Жалоба уходит в чат, который настроен через `/setmodchat`.\n\nЕсли чат модераторов не настроен, бот сообщит об этом.'
+        },
+        {
+            q: 'Команда /achievements',
+            t: 'achievements достижения',
+            a: '`/achievements` — твои достижения.\n`/achievements top` — топ-10 по количеству достижений.\n\nЗа некоторые достижения дают очки. Примеры: первое сообщение, 10 репутации, 100 очков, 5 друзей, VIP-покупка.'
+        },
+        {
+            q: 'Как получить очки?',
+            t: 'очки получить заработать баллы',
+            a: 'Основные способы получить очки:\n\n• `/daily` — +10 раз в день.\n• `/game` — +50 за победу.\n• `/rps` — +10 за победу.\n• `/roulette` — выигрыш с коэффициентом 2, а на зеро — джекпот.\n• Достижения — бонусные очки.\n• `/transfer` — перевод от другого участника.\n\nОчки тратятся в `/shop` и на VIP.'
+        },
+        {
+            q: 'На что тратить очки?',
+            t: 'очки тратить потратить магазин',
+            a: 'Очки тратятся в `/shop`:\n\n• Товары: конфетка, лотерейный билет, ускоритель, защита, личный тэг, секретный подарок.\n• VIP-статусы: от 1000 до 25000 очков.\n\nКупить: `/buy номер` или `/buy vip1` … `/buy vip5`.'
+        },
+        {
+            q: 'Что такое репутация?',
+            t: 'репутация rep что такое',
+            a: 'Репутация — социальный рейтинг участника. Её повышают командой `/rep @user` и понижают `/unrep @user` (уровень 3+).\n\nПовышать репутацию можно раз в день. Топ смотрится через `/repstats`, своя репутация видна в `/profile`.'
+        },
+        {
+            q: 'Что такое VIP?',
+            t: 'vip вип что такое привилегии иммунитет алмаз платинум премиум получить купить',
+            a: 'VIP — платный внутриигровой статус за очки. Он даёт особый тэг и иммунитеты:\n\n• Премиум — антифлуд.\n• Премиум+ — антифлуд и антимат.\n• Платинум — плюс иммунитет к муту.\n• Платинум+ — плюс иммунитет к бану.\n• Алмаз — максимальные привилегии.\n\nПокупка через `/buy vip1` … `/buy vip5`.'
+        },
+
+        {
+            q: 'Команда /game',
+            t: 'game игра угадай число',
+            a: '`/game` — угадай число от 1 до 10.\n\nБот покажет кнопки. За победу — **+50 очков**. У каждого игрока одна активная игра в чате, устаревшие сбрасываются через 10 минут.'
+        },
+        {
+            q: 'Команда /roulette',
+            t: 'roulette рулетка ставка',
+            a: '`/roulette [ставка]` — рулетка.\n\nСтавка от 1 до 1000 очков. Пример: `/roulette 50`.\n\nДальше выбери кнопку: красное/чёрное, 1–19/20–36, чётное/нечётное или зеро. Можно отменить и вернуть ставку.\n\nУ каждого игрока одна активная игра в чате, тайм-аут 10 минут.'
+        },
+        {
+            q: 'Как работает рулетка?',
+            t: 'рулетка правила выплата красное черное зеро',
+            a: 'В рулетке выпадает число от 0 до 36.\n\n• Красное/чёрное, чётное/нечётное, 1–19/20–36 — выплата x2 к ставке (с учётом вычета в джекпот).\n• Зеро — джекпот: забираешь весь накопленный джекпот плюс ставку.\n• 5% ставки уходит в джекпот, но только при ставке от 20 очков.\n\nУ каждого игрока одна активная игра в чате, тайм-аут 10 минут.'
+        },
+        {
+            q: 'Что такое джекпот?',
+            t: 'джекпот рулетка зеро',
+            a: 'Джекпот — общий банк рулетки. Он пополняется на 5% от ставок (при ставке от 20 очков).\n\nЕсли выпадает **зеро** и ты поставил на зеро — забираешь весь джекпот плюс ставку. После этого джекпот сбрасывается.\n\nТекущий размер виден в сообщении рулетки.'
+        },
+        {
+            q: 'Команда /roulette_stats',
+            t: 'roulette_stats статистика рулетки',
+            a: '`/roulette_stats` — твоя статистика рулетки: количество игр, побед и поражений, процент побед, всего поставлено и выиграно, а также джекпоты.\n\nСтатистика считается отдельно по чатам.'
+        },
+        {
+            q: 'Команда /rps',
+            t: 'rps камень ножницы бумага',
+            a: '`/rps` — камень-ножницы-бумага.\n\nПросто отправь команду и выбери ход кнопкой: 🪨, ✂️ или 📄. Аргументы не нужны.\n\nЗа победу — **+10 очков**. У каждого игрока одна активная игра, тайм-аут 10 минут.'
+        },
+        {
+            q: 'Команда /coin',
+            t: 'coin монетка',
+            a: '`/coin` — подбросить монетку. Бот случайно покажет «Орёл» или «Решка».\n\nОчки за это не начисляются, но можно использовать для спора.'
+        },
+        {
+            q: 'Команда /dice',
+            t: 'dice кости кубики',
+            a: '`/dice` — бросить два кубика. Бот покажет значения и сумму.\n\nНапример: `🎲 3 + 5 = 8`.'
+        },
+        {
+            q: 'Команда /dick',
+            t: 'dick писька размер',
+            a: '`/dick` — ежедневная игра «писька».\n\nРазмер меняется случайно от −5 до +10 см, но не ниже 0. Играть можно раз в день. Результат и место в топе показываются сразу.'
+        },
+        {
+            q: 'Команда /top',
+            t: 'top топ размеры',
+            a: '`/top` — топ-10 размеров в чате по игре `/dick`.\n\nЭто не топ игроков и не топ по сообщениям. Для активности есть `/chatstats`, для репутации — `/repstats`.'
+        },
+        {
+            q: 'Какие игры есть у бота?',
+            t: 'игры список развлечения',
+            a: 'Игры ChatCleanser:\n\n• `/game` — угадай число.\n• `/roulette` — рулетка с джекпотом.\n• `/rps` — камень-ножницы-бумага.\n• `/coin` — монетка.\n• `/dice` — два кубика.\n• `/dick` — ежедневная игра.\n• `/top` — топ размеров.\n\nПочти все игры работают на кнопках и не требуют сложных аргументов.'
+        },
+        {
+            q: 'Почему рулетка не запускается?',
+            t: 'рулетка не работает ошибка',
+            a: 'Проверь:\n\n1. Ставка от 1 до 1000 очков.\n2. Достаточно ли очков на балансе.\n3. Нет ли у тебя уже активной игры в этом чате — заверши её или подожди 10 минут.\n4. Команда не отключена через `/uncommand`.\n\nЕсли ошибка повторяется, напиши @unitydevs3.'
+        },
+        {
+            q: 'Можно ли играть в рулетку в личке?',
+            t: 'рулетка личка',
+            a: 'Рулетка рассчитана на чаты. В личке бот отвечает на базовые команды, но для игр и экономики лучше использовать группу, где бот настроен.'
+        },
+        {
+            q: 'Сколько очков дает игра?',
+            t: 'очки игра награда 50 10',
+            a: 'Награды:\n\n• `/game` — **+50** за победу.\n• `/rps` — **+10** за победу.\n• `/daily` — **+10** раз в день.\n• `/roulette` — выплата x2, на зеро — джекпот.\n\nЗа достижения тоже дают бонусные очки.'
+        },
+        {
+            q: 'Что такое RPS?',
+            t: 'rps что такое',
+            a: 'RPS — это rock-paper-scissors, камень-ножницы-бумага.\n\nВ боте это команда `/rps` с кнопками. Аргументы не нужны, за победу дают +10 очков.'
+        },
+
+        {
+            q: 'Команда /rep',
+            t: 'rep репутация повысить',
+            a: '`/rep @user` — повысить репутацию на 1.\n\nМожно ответить на сообщение и написать `/rep`. Повышать репутацию можно **раз в день**. Себе — нельзя.\n\nТоп: `/repstats`. Своя репутация: `/profile`.'
+        },
+        {
+            q: 'Команда /repstats',
+            t: 'repstats топ репутации',
+            a: '`/repstats` — топ-10 участников по репутации.\n\nРепутация повышается через `/rep` и понижается через `/unrep` (уровень 3+).'
+        },
+        {
+            q: 'Команда /friend',
+            t: 'friend друг добавить',
+            a: '`/friend @user` — добавить участника в друзья.\n\nМожно ответить на сообщение и написать `/friend`. Себя добавить нельзя. Список друзей — `/friends`, удалить — `/unfriend`.'
+        },
+        {
+            q: 'Команда /unfriend',
+            t: 'unfriend удалить друга',
+            a: '`/unfriend @user` — удалить участника из друзей.\n\nЕсли пользователя нет в друзьях, бот сообщит об этом. Список — `/friends`.'
+        },
+        {
+            q: 'Команда /friends',
+            t: 'friends друзья список посмотреть',
+            a: '`/friends` — список твоих друзей.\n\nБот покажет до 10 друзей и общее количество, если их больше.'
+        },
+        {
+            q: 'Команда /achievements top',
+            t: 'achievements top топ достижений',
+            a: '`/achievements top` — топ-10 участников по количеству достижений.\n\nБез аргумента `/achievements` показывает твои достижения и их описания.'
+        },
+        {
+            q: 'Чем друзья отличаются от репутации?',
+            t: 'друзья репутация разница',
+            a: 'Друзья — это список контактов, который ты формируешь сам через `/friend`. Он не влияет на права и очки.\n\nРепутация — социальный рейтинг: `/rep` повышает, `/unrep` понижает, `/repstats` показывает топ. Это разные системы.'
+        },
+
+        {
+            q: 'Команда /warn',
+            t: 'warn варн предупреждение',
+            a: '`/warn @user причина` — выдать предупреждение (варн).\n\nДоступно с уровня 1. Можно ответить на сообщение и написать `/warn причина`.\n\n**3 варна = бан на 5 дней**, если у пользователя нет VIP-иммунитета к бану. Список варнов — `/warns`, история — `/history`.'
+        },
+        {
+            q: 'Сколько варнов до бана?',
+            t: 'варны бан 3 5 дней',
+            a: 'При **3 предупреждениях** бот автоматически выдаёт бан на **5 дней**, если у пользователя нет VIP-иммунитета к бану.\n\nОчистить варны может уровень 3+ через `/clearwarns @user`. Посмотреть варны — `/warns`.'
+        },
+        {
+            q: 'Команда /warns',
+            t: 'warns варны список посмотреть',
+            a: '`/warns @user` — список предупреждений участника.\n\nПоказывает причину, модератора и время выдачи. Доступно с уровня 1. Можно использовать ответом на сообщение.'
+        },
+        {
+            q: 'Команда /history',
+            t: 'history история наказаний',
+            a: '`/history [@user]` — история нарушений и наказаний участника.\n\nПоказывает последние 20 записей: действие, модератор, время и причину. Доступно с уровня 1.'
+        },
+        {
+            q: 'Команда /sms',
+            t: 'sms смс удалить сообщение',
+            a: '`/sms` или `/смс` — удалить сообщение без мута.\n\nИспользуй **ответом** на сообщение, которое нужно удалить. Бот удалит целевое сообщение и саму команду, а действие запишет в журнал.\n\nДоступно с уровня 1.'
+        },
+        {
+            q: 'Команда /mute',
+            t: 'mute мут замутить',
+            a: '`/mute @user 10m причина` — заглушить участника.\n\nПримеры:\n`/mute @user 10m спам`\n`/mute 2h флуд` (ответом на сообщение)\n\nДоступно с уровня 2. Бот попросит подтвердить действие. Нельзя замутить администратора уровня 2+ и VIP с иммунитетом.'
+        },
+        {
+            q: 'Какие форматы времени у мута?',
+            t: 'mute время 10m 2h 1d',
+            a: 'Форматы длительности:\n\n• `m` — минуты, от 1 до 60. Пример: `10m`.\n• `h` — часы, от 1 до 720. Пример: `2h`.\n• `d` — дни, от 1 до 2000. Пример: `1d`.\n\nБез времени или с неверным форматом бот попросит исправить.'
+        },
+        {
+            q: 'Команда /unmute',
+            t: 'unmute снять мут размутить',
+            a: '`/unmute @user` — снять мут.\n\nДоступно с уровня 2. Можно ответить на сообщение. Если пользователь не в муте, бот сообщит об этом.'
+        },
+        {
+            q: 'Команда /kick',
+            t: 'kick кик выгнать',
+            a: '`/kick @user причина` — выгнать участника из чата.\n\nДоступно с уровня 2. Бот попросит подтвердить действие кнопкой. Нельзя выгнать администратора уровня 2+. Кик не блокирует вход навсегда — для этого есть `/ban`.'
+        },
+        {
+            q: 'Команда /ban',
+            t: 'ban бан забанить',
+            a: '`/ban @user [время] причина` — заблокировать участника.\n\nБез времени — навсегда. С временем — на срок: `1h`, `2d` и т.д.\n\nДоступно с уровня 3. Бот попросит подтвердить в течение 5 минут. Нельзя забанить админа уровня 3+ и VIP с иммунитетом.'
+        },
+        {
+            q: 'Команда /unban',
+            t: 'unban разбанить',
+            a: '`/unban @user` — разблокировать участника.\n\nДоступно с уровня 3. Можно ответить на сообщение или указать `@username` / ID.'
+        },
+        {
+            q: 'Команда /clearwarns',
+            t: 'clearwarns очистить варны',
+            a: '`/clearwarns @user` — очистить все предупреждения участника.\n\nДоступно с уровня 3. Действие записывается в журнал модерации.'
+        },
+        {
+            q: 'Команда /unrep',
+            t: 'unrep понизить репутацию',
+            a: '`/unrep @user` — понизить репутацию на 1.\n\nДоступно с уровня 3. Не путать с `/rep` — та команда доступна всем и повышает репутацию.'
+        },
+        {
+            q: 'Команда /antiflood_on',
+            t: 'antiflood флуд включить',
+            a: '`/antiflood_on` — включить защиту от флуда.\n\nДоступно с уровня 3. Бот следит за повторяющимися сообщениями и при срабатывании мутит на 10 минут.'
+        },
+        {
+            q: 'Команда /antiflood_off',
+            t: 'antiflood флуд выключить',
+            a: '`/antiflood_off` — выключить защиту от флуда.\n\nДоступно с уровня 3. После выключения бот не будет реагировать на частые сообщения.'
+        },
+        {
+            q: 'Как работает антифлуд?',
+            t: 'антифлуд флуд мут 10 минут',
+            a: 'Антифлуд отслеживает повторяющиеся сообщения от одного участника в коротком окне. При срабатывании бот мутит на **10 минут**.\n\nВключается `/antiflood_on`, выключается `/antiflood_off`. Доступно с уровня 3.'
+        },
+        {
+            q: 'Команда /antimat_on',
+            t: 'antimat мат включить',
+            a: '`/antimat_on` — включить фильтр мата и оскорблений.\n\nДоступно с уровня 3. Бот удаляет сообщения с нецензурной лексикой, включая некоторые обходные написания. Первое нарушение — предупреждение, повторное — мут на 15 минут. Словарь хранится в `bad_words.json`.'
+        },
+        {
+            q: 'Команда /antimat_off',
+            t: 'antimat мат выключить',
+            a: '`/antimat_off` — выключить фильтр мата.\n\nДоступно с уровня 3. После выключения бот не будет удалять сообщения за нецензурную лексику.'
+        },
+        {
+            q: 'Как работает антимат?',
+            t: 'антимат мат оскорбления',
+            a: 'Антимат проверяет сообщения по словарю `bad_words.json` и удаляет нецензурную лексику. Первое нарушение — предупреждение, повторное — мут на **15 минут**.\n\nВключается `/antimat_on`, выключается `/antimat_off`. Доступно с уровня 3. Словарь можно расширять на сервере, после чего перезагрузить его через меню разработчика.'
+        },
+        {
+            q: 'Команда /antilink_on',
+            t: 'antilink ссылки включить',
+            a: '`/antilink_on` — включить блокировку ссылок и рекламы.\n\nДоступно с уровня 3. Бот удаляет сообщение со ссылкой и предупреждает участника.'
+        },
+        {
+            q: 'Команда /antilink_off',
+            t: 'antilink ссылки выключить',
+            a: '`/antilink_off` — выключить блокировку ссылок.\n\nДоступно с уровня 3. После выключения ссылки в чате снова разрешены.'
+        },
+        {
+            q: 'Как работает антиссылки?',
+            t: 'антиссылки ссылки реклама',
+            a: 'Антиссылки удаляют сообщение со ссылкой или рекламой и предупреждают участника. Включается `/antilink_on`, выключается `/antilink_off`.\n\nДоступно с уровня 3. Если нужно разрешить отдельные ссылки, временно отключи защиту.'
+        },
+        {
+            q: 'Команда /antiraid',
+            t: 'antiraid рейд',
+            a: '`/antiraid` — переключить режим антирейда.\n\nДоступно с уровня 4. Бот начинает отслеживать массовые упоминания и мутить нарушителей на 60 минут. Повторная команда выключает режим.'
+        },
+        {
+            q: 'Команда /setadmin',
+            t: 'setadmin назначить админа снять админку снять права 0',
+            a: '`/setadmin @user уровень` — назначить администратора.\n\nУровни: 1–5, `0` — снять права.\nПример: `/setadmin @user 3`.\n\nДоступно с уровня 4. Нельзя выдать уровень выше своего или изменить равного/старшего админа.'
+        },
+        {
+            q: 'Команда /freeze',
+            t: 'freeze заморозить админа',
+            a: '`/freeze @user причина` — заморозить администратора.\n\nЗамороженный админ не может использовать команды, пока его не разморозят. Доступно с уровня 4. Нельзя заморозить себя, равного или старшего.'
+        },
+        {
+            q: 'Команда /unfreeze',
+            t: 'unfreeze разморозить',
+            a: '`/unfreeze @user` — разморозить администратора.\n\nДоступно с уровня 4. После разморозки права и уровень сохраняются.'
+        },
+        {
+            q: 'Команда /rules set',
+            t: 'rules set правила установить',
+            a: '`/rules set текст правил` — установить или изменить правила чата.\n\nДоступно с уровня 4. Пример:\n`/rules set 1. Без спама. 2. Уважайте участников.`\n\nПосмотреть правила: `/rules`.'
+        },
+        {
+            q: 'Команда /rules del',
+            t: 'rules del удалить правила',
+            a: '`/rules del` — удалить правила чата.\n\nДоступно с уровня 4. После удаления `/rules` сообщит, что правила не заданы.'
+        },
+        {
+            q: 'Почему нельзя замутить администратора?',
+            t: 'нельзя замутить админ',
+            a: 'Бот защищает администраторов: нельзя замутить участника с уровнем 2+.\n\nЕсли нужно ограничить админа, сначала снимите или заморозьте его через `/setadmin @user 0` или `/freeze @user` (уровень 4+).'
+        },
+        {
+            q: 'Почему VIP не получает мут?',
+            t: 'vip иммунитет мут',
+            a: 'У VIP-статусов есть иммунитеты:\n\n• Премиум — антифлуд.\n• Премиум+ — антифлуд и антимат.\n• Платинум — плюс иммунитет к муту.\n• Платинум+ и Алмаз — плюс иммунитет к бану.\n\nЕсли у пользователя иммунитет к муту, `/mute` вернёт ошибку.'
+        },
+        {
+            q: 'Как удалить сообщение без мута?',
+            t: 'удалить сообщение смс мут',
+            a: 'Ответь на сообщение и отправь `/sms` или `/смс`. Бот удалит целевое сообщение и саму команду, никого не мутируя.\n\nДоступно с уровня 1. Действие попадёт в журнал модерации.'
+        },
+        {
+            q: 'Кто может использовать команды модерации?',
+            t: 'кто может модерировать модерация уровень',
+            a: 'Команды модерации доступны администраторам бота с нужным уровнем:\n\n1+ — варны, история, `/sms`.\n2+ — мут, размут, кик.\n3+ — бан, разбан, очистка варнов, антифлуд/антимат/антиссылки.\n4+ — назначение админов, заморозка, правила, антирейд.\n5+ — `@all`, отключение команд, чат жалоб, капча.\n\nОбычные участники могут использовать только базовые и социальные команды.'
+        },
+
+        {
+            q: 'Команда @all',
+            t: 'all упомянуть всех',
+            a: '`@all текст` — упомянуть всех участников чата.\n\nДоступно с уровня 5. Просто напиши сообщение, содержащее `@all`, например: `@all Собрание через 10 минут`.\n\nНе злоупотребляй: это массовое упоминание.'
+        },
+        {
+            q: 'Команда /uncommand',
+            t: 'uncommand отключить команду',
+            a: '`/uncommand имя_команды` — отключить команду в чате.\n\nПример: `/uncommand dick`.\n\nДоступно с уровня 5. Посмотреть отключённые: `/listcommands`. Включить обратно: `/encommand`.'
+        },
+        {
+            q: 'Команда /encommand',
+            t: 'encommand включить команду',
+            a: '`/encommand имя_команды` — включить ранее отключённую команду.\n\nПример: `/encommand dick`.\n\nДоступно с уровня 5. Список отключённых: `/listcommands`.'
+        },
+        {
+            q: 'Команда /listcommands',
+            t: 'listcommands отключенные команды какие отключены посмотреть список',
+            a: '`/listcommands` — показать команды, отключённые в этом чате.\n\nДоступно с уровня 5. Если список пуст, бот сообщит, что все команды включены.'
+        },
+        {
+            q: 'Команда /setmodchat',
+            t: 'setmodchat чат модераторов настроить установить',
+            a: '`/setmodchat ID_чата` — установить чат для жалоб и модерации.\n\nПример: `/setmodchat -1001234567890`.\n\nДоступно с уровня 5. Узнать ID чата можно через `/id`. Жалобы из `/report` будут приходить в этот чат.'
+        },
+        {
+            q: 'Команда /captcha_on',
+            t: 'captcha_on капча включить',
+            a: '`/captcha_on` — включить проверку новичков на робота.\n\nДоступно с уровня 5 в группе. Новые участники будут замучены до прохождения капчи в личке с ботом.\n\nБоту нужны права ограничивать участников.'
+        },
+        {
+            q: 'Команда /captcha_off',
+            t: 'captcha_off капча выключить',
+            a: '`/captcha_off` — выключить проверку новичков.\n\nДоступно с уровня 5 в группе. После выключения новые участники не будут получать капчу.'
+        },
+        {
+            q: 'Как работает капча?',
+            t: 'капча проверка новичок',
+            a: 'Когда капча включена, новый участник получает мут на 60 минут и сообщение со ссылкой на бота.\n\nВ личке бот показывает картинку с кодом. Нужно ввести код кнопками или текстом. Даётся 3 попытки. При неудаче — бан на 24 часа.\n\nВключается `/captcha_on`, выключается `/captcha_off` (уровень 5).'
+        },
+        {
+            q: 'Почему новичок замучен?',
+            t: 'новичок мут капча',
+            a: 'Скорее всего, в чате включена капча. Новый участник получает мут на 60 минут, пока не пройдёт проверку в личке с ботом.\n\nЕсли капча не нужна, руководитель может выключить её через `/captcha_off`.'
+        },
+        {
+            q: 'Как пройти капчу?',
+            t: 'пройти капча код',
+            a: 'Перейди по ссылке, которую бот прислал в чат, и введи код с картинки в личке с ботом.\n\nДаётся 3 попытки. Если не получилось — бан на 24 часа. После успешной проверки мут снимается автоматически.'
+        },
+        {
+            q: 'Сколько времени на капчу?',
+            t: 'капча время 60 минут попытки',
+            a: 'Капча действует **60 минут**. Даётся **3 попытки**. При неудаче — бан на **24 часа**.\n\nКод состоит из 5 символов. Ссылка на проверку приходит в чат.'
+        },
+        {
+            q: 'Почему капча не работает?',
+            t: 'капча не работает права',
+            a: 'Проверь:\n\n1. Бот администратор в чате.\n2. У бота есть право «Ограничивать участников».\n3. Капча включена через `/captcha_on`.\n4. Бот может писать новичку в личку.\n\nЕсли бот не может замутить новичка, он напишет об этом в чат.'
+        },
+        {
+            q: 'Что такое кулдаун команд?',
+            t: 'кулдаун задержка 3 секунды',
+            a: 'Это ограничение на частоту использования команд: **3 секунды** между командами одного пользователя.\n\nЕсли поторопиться, бот может проигнорировать команду. Разработчики от кулдауна освобождены.'
+        },
+
+        {
+            q: 'Сколько стоит VIP?',
+            t: 'vip цена стоимость 1000 2500 5000 10000 25000',
+            a: 'Цены VIP:\n\n• `vip1` Премиум — 1000 очков.\n• `vip2` Премиум+ — 2500 очков.\n• `vip3` Платинум — 5000 очков.\n• `vip4` Платинум+ — 10000 очков.\n• `vip5` Алмаз — 25000 очков.\n\nПокупка: `/buy vip1` … `/buy vip5`. Статус сохраняется.'
+        },
+        {
+            q: 'Что дает VIP?',
+            t: 'vip привилегии иммунитет',
+            a: 'VIP даёт особый тэг и иммунитеты:\n\n• Премиум — антифлуд.\n• Премиум+ — антифлуд и антимат.\n• Платинум — плюс иммунитет к муту.\n• Платинум+ — плюс иммунитет к бану.\n• Алмаз — максимальные привилегии.\n\nЧем выше уровень, тем меньше наказаний на тебя действует.'
+        },
+        {
+            q: 'VIP навсегда?',
+            t: 'vip навсегда срок',
+            a: 'Да, купленный VIP-статус сохраняется бессрочно. Он привязан к твоему профилю и не сгорает.\n\nНе путай с товаром «VIP статус» за 200 очков из магазина — это отдельный статус на 1 день.'
+        },
+        {
+            q: 'Что есть в магазине?',
+            t: 'shop магазин товары цены',
+            a: 'В магазине:\n\n1. 🍬 Конфетка — 10 очков.\n2. 🎫 Лотерейный билет — 50 очков.\n3. 👑 VIP статус — 200 очков (на 1 день).\n4. 🏷 Личный тэг — 500 очков (на 7 дней).\n5. ⚡ Ускоритель — 100 очков (+10% к опыту на 1 час).\n6. 🛡 Защита — 300 очков (от одного наказания).\n7. 🎁 Секретный подарок — 1000 очков.\n\nПлюс VIP-статусы `vip1`–`vip5`.'
+        },
+        {
+            q: 'Что такое личный тэг?',
+            t: 'тэг тег личный 500',
+            a: 'Личный тэг — товар за 500 очков. После покупки бот попросит написать тэг и поставит его тебе в этом чате на **7 дней**.\n\nМаксимальная длина — 16 символов. Купить: `/buy 4`.'
+        },
+        {
+            q: 'Что такое ускоритель?',
+            t: 'ускоритель 100 опыт',
+            a: 'Ускоритель — товар за 100 очков. Даёт **+10% к опыту на 1 час**.\n\nКупить: `/buy 5`.'
+        },
+        {
+            q: 'Что такое защита?',
+            t: 'защита 300 наказание',
+            a: 'Защита — товар за 300 очков. Снимает одно наказание.\n\nКупить: `/buy 6`.'
+        },
+        {
+            q: 'Что такое секретный подарок?',
+            t: 'подарок 1000 секретный',
+            a: 'Секретный подарок — товар за 1000 очков. Что внутри — сюрприз.\n\nКупить: `/buy 7`.'
+        },
+        {
+            q: 'Что такое лотерейный билет?',
+            t: 'лотерея билет 50',
+            a: 'Лотерейный билет — товар за 50 очков. Даёт шанс выиграть приз.\n\nКупить: `/buy 2`.'
+        },
+        {
+            q: 'Как купить VIP?',
+            t: 'купить vip',
+            a: 'Напиши `/buy vip1`, `/buy vip2`, `/buy vip3`, `/buy vip4` или `/buy vip5`.\n\nЦены: 1000, 2500, 5000, 10000 и 25000 очков. Нельзя купить статус ниже текущего. Если не хватает очков, бот покажет баланс.'
+        },
+        {
+            q: 'Как заработать 25000 очков?',
+            t: 'заработать много очков 25000',
+            a: 'Быстрого способа нет, но помочь могут:\n\n• `/daily` — +10 каждый день.\n• `/game` — +50 за победу.\n• `/rps` — +10 за победу.\n• `/roulette` — риск, но выплата x2 и джекпот.\n• Достижения — бонусные очки.\n• `/transfer` — попросить перевод у друзей.\n\nИграй регулярно и не ставь последнее.'
+        },
+
+        {
+            q: 'Команда /dev',
+            t: 'dev разработчик меню',
+            a: '`/dev` — меню разработчика.\n\nДоступно только разработчикам. Внутри: список чатов, выход из чата, глубокое удаление, возврат бота, выдача админки 6 уровня, статистика, метрики, перезагрузка банвордов и БД, перезапуск бота.'
+        },
+        {
+            q: 'Команда /ch',
+            t: 'ch черный список чат',
+            a: '`/ch ID_чата` — добавить чат в чёрный список и выйти из него.\n\nТолько для разработчиков. Пример: `/ch -1001234567890`.\n\nУбрать из ЧС: `/unch ID_чата`.'
+        },
+        {
+            q: 'Команда /unch',
+            t: 'unch убрать чс',
+            a: '`/unch ID_чата` — убрать чат из чёрного списка.\n\nТолько для разработчиков. После этого бота можно снова добавить в чат.'
+        },
+        {
+            q: 'Команда /blacklist',
+            t: 'blacklist чс список',
+            a: '`/blacklist` — показать чёрный список чатов.\n\nТолько для разработчиков. Чаты из ЧС не могут использовать бота: при добавлении он сразу выходит.'
+        },
+        {
+            q: 'Команда /grup',
+            t: 'grup рассылка',
+            a: '`/grup текст` — рассылка сообщения по всем чатам, где есть бот.\n\nТолько для разработчиков. Используй аккуратно: сообщение увидят все чаты.'
+        },
+        {
+            q: 'Кто может использовать команды разработчика?',
+            t: 'разработчик доступ',
+            a: 'Только пользователи из списка разработчиков. Обычные админы и владельцы чатов не могут использовать `/dev`, `/ch`, `/unch`, `/blacklist` и `/grup`.\n\nЕсли нужна техническая помощь, напиши @unitydevs3.'
+        },
+
+        {
+            q: 'Что за AI-помощник на сайте?',
+            t: 'ai помощник сайт',
+            a: 'Это встроенный помощник по ChatCleanser. Он отвечает на вопросы о командах, модерации, играх, VIP и настройке бота.\n\nРаботает на локальной базе знаний: ответы уже находятся в браузере, никакие данные никуда не отправляются.'
+        },
+        {
+            q: 'Ты настоящий AI?',
+            t: 'настоящий ии нейросеть api',
+            a: 'Нет, это не большая языковая модель и не нейросеть с API. Это локальный помощник с базой знаний и умным поиском по ключевым словам.\n\nОн не придумывает ответы из воздуха: если точного совпадения нет, честно предложит поддержку.'
+        },
+        {
+            q: 'Ты сохраняешь мои сообщения?',
+            t: 'сохраняешь данные сообщения',
+            a: 'Нет. Сообщения в чате с помощником живут только в памяти страницы и исчезают после перезагрузки. Они не отправляются на сервер и не сохраняются в базе.\n\nКнопка с метлой очищает историю чата.'
+        },
+        {
+            q: 'Как очистить чат с помощником?',
+            t: 'очистить чат помощник',
+            a: 'Нажми на иконку метлы 🧹 в шапке помощника. История сообщений очистится, и снова появится приветствие.\n\nЗакрыть помощник можно крестиком или клавишей Esc.'
+        },
+        {
+            q: 'Как искать команды на сайте?',
+            t: 'поиск команды сайт ctrl k',
+            a: 'В разделе #commands есть поиск:\n\n• Начни вводить название или описание команды.\n• `Ctrl+K` или `/` — перейти к поиску.\n• `Esc` — сбросить.\n• Чипы под поиском фильтруют по категориям: игры, модерация, уровни, разработчик.\n\nПоиск ищет по названию, описанию и ключевым словам.'
+        },
+        {
+            q: 'Где на сайте все команды?',
+            t: 'сайт команды раздел',
+            a: 'Все команды — в разделе **#commands**. Там есть поиск, фильтры по категориям и бейджи уровней доступа.\n\nБыстрый переход: нажми «Все команды» в шапке сайта.'
+        },
+        {
+            q: 'Где на сайте модерация?',
+            t: 'сайт модерация раздел',
+            a: 'Раздел **#moderation** — про защиту чата: антифлуд, антимат, антиссылки, антирейд, капча и статистика.\n\nКоманды модерации с уровнями доступа есть в #commands.'
+        },
+        {
+            q: 'Где на сайте админ?',
+            t: 'сайт админ раздел',
+            a: 'Раздел **#admin-team** — карточка главного технического администратора @sotaop и ссылки на поддержку.\n\nТам же можно написать админу или открыть бота.'
+        },
+        {
+            q: 'Какие разделы есть на сайте?',
+            t: 'сайт разделы навигация',
+            a: 'Основные разделы:\n\n• #commands — все команды с поиском.\n• #moderation — возможности модерации.\n• #admin-team — администрация и поддержка.\n• Кнопка AI-помощника — ответы на вопросы.\n\nВ шапке есть быстрые ссылки на эти разделы.'
+        },
+        {
+            q: 'Как связаться с создателем сайта?',
+            t: 'создатель сайта контакт',
+            a: 'Создатель ChatCleanser и сайта — @sotaop. Поддержка бота — @unitydevs3.\n\nПо вопросам сайта, команд или ошибок лучше писать в поддержку и прикладывать скриншот.'
+        },
+        {
+            q: 'Что делать, если ответ не найден?',
+            t: 'не найден ответ помощь',
+            a: 'Попробуй переформулировать вопрос или назови конкретную команду: `/mute`, `/roulette`, `/captcha_on`, `/setadmin`.\n\nЕсли ответа всё равно нет, напиши в поддержку @unitydevs3 или создателю @sotaop. Они помогут разобраться.'
+        }
+    ];
+
+    const LEVEL_META = {
+        1: { icon: '🛡', name: 'Кандидат' },
+        2: { icon: '🔨', name: 'Младший модератор' },
+        3: { icon: '⛔', name: 'Старший модератор' },
+        4: { icon: '⚡', name: 'Зам. руководителя' },
+        5: { icon: '👑', name: 'Руководитель' },
+        6: { icon: '👑', name: 'Владелец' }
+    };
+
+    const SUGGESTIONS = [
+        'Как добавить бота?',
+        'Все команды',
+        'Команды 1 уровня',
+        'Как работает рулетка?',
+        'VIP статусы',
+        'Как стать админом?'
+    ];
+
+    const GREETING = 'Привет! 👋 Я **AI-помощник ChatCleanser**.\nСпроси о командах, модерации, играх, VIP или настройке бота. Отвечаю по локальной базе знаний — без API и отправки данных.\n\nНапример: «как замутить участника» или «сколько стоит VIP».';
+
+    const FALLBACK = 'Пока не нашёл точного ответа 🤔\nУточни, пожалуйста: тебя интересуют команды, модерация, игры, VIP, настройка бота или сам сайт?\n\nМожно назвать команду: `/mute`, `/roulette`, `/captcha_on`. Если нужна помощь человека: @unitydevs3 (поддержка) или @sotaop (создатель).';
+
+    const panel = document.getElementById('ai-panel');
+    if (!panel) return;
+
+    const fab = document.getElementById('ai-fab');
+    const messagesEl = document.getElementById('ai-messages');
+    const suggestEl = document.getElementById('ai-suggest');
+    const formEl = document.getElementById('ai-form');
+    const inputEl = document.getElementById('ai-input');
+    const clearBtn = document.getElementById('ai-clear');
+    const closeBtn = document.getElementById('ai-close');
+
+    let greeted = false;
+    let busy = false;
+    let typingEl = null;
+
+    const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[c]));
+
+    function formatAnswer(text) {
+        const parts = String(text).split(/(`[^`]+`)/g);
+        return parts.map((part) => {
+            if (part.length > 1 && part.charAt(0) === '`' && part.charAt(part.length - 1) === '`') {
+                return '<code>' + escapeHtml(part.slice(1, -1)) + '</code>';
+            }
+            let s = escapeHtml(part);
+            s = s.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+            s = s.replace(/(https?:\/\/[^\s<]+[^\s<.,;:!?)])/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+            s = s.replace(/(^|[\s(])(@[a-zA-Z0-9_]{5,32})/g, (m, prefix, user) =>
+                prefix + '<a href="https://t.me/' + user.slice(1) + '" target="_blank" rel="noopener">' + user + '</a>'
+            );
+            return s.replace(/\n/g, '<br>');
+        }).join('');
+    }
+
+    function normalizeText(s) {
+        return String(s || '').toLowerCase().replace(/ё/g, 'е').replace(/[–—]/g, '-');
+    }
+
+    const STOP_WORDS = new Set([
+        'а', 'без', 'бы', 'в', 'во', 'вот', 'вы', 'да', 'для', 'до', 'же', 'за', 'и', 'из',
+        'или', 'как', 'ко', 'кто', 'ли', 'мне', 'может', 'можно', 'мы', 'на', 'над', 'не',
+        'нет', 'ни', 'но', 'ну', 'о', 'об', 'он', 'она', 'они', 'оно', 'от', 'по', 'при',
+        'с', 'со', 'так', 'также', 'то', 'ты', 'у', 'что', 'чтобы', 'это', 'я'
+    ]);
+
+    const SYNONYM_GROUPS = [
+        ['ban', 'бан', 'банить', 'забанить', 'баню', 'банте'],
+        ['mute', 'мут', 'мутить', 'замутить', 'заглушить', 'мьют'],
+        ['kick', 'кик', 'кикнуть', 'выгнать', 'выкинуть'],
+        ['warn', 'варн', 'варны', 'варнов', 'предупреждение', 'предупреждения', 'заварнить'],
+        ['rep', 'реп', 'репутация', 'репутации', 'репутацию'],
+        ['points', 'очки', 'очков', 'очками', 'баллы', 'баллов', 'коины', 'деньги'],
+        ['vip', 'вип', 'випка', 'випку', 'премиум'],
+        ['roulette', 'рулетка', 'рулетки', 'рулетку', 'рулетке'],
+        ['captcha', 'капча', 'капчи', 'капчу', 'капчей'],
+        ['admin', 'админ', 'админа', 'админу', 'админы', 'админов', 'админка', 'админку', 'администратор', 'администратора', 'администраторы'],
+        ['moderator', 'модератор', 'модератора', 'модераторы', 'модераторов'],
+        ['command', 'команда', 'команды', 'команд', 'команду', 'команде'],
+        ['level', 'уровень', 'уровня', 'уровне', 'уровни', 'уровней', 'лвл'],
+        ['shop', 'магазин', 'магазина', 'лавка'],
+        ['buy', 'купить', 'покупка', 'приобрести'],
+        ['rules', 'правила', 'правил', 'регламент'],
+        ['report', 'жалоба', 'жалобу', 'репорт', 'пожаловаться'],
+        ['friend', 'друг', 'друга', 'друзья', 'друзей', 'дружба'],
+        ['sms', 'смс'],
+        ['dice', 'кости', 'кубик', 'кубики'],
+        ['coin', 'монетка', 'монету', 'орел', 'решка'],
+        ['game', 'игра', 'игры', 'игру', 'играть'],
+        ['top', 'топ', 'рейтинг'],
+        ['freeze', 'заморозка', 'заморозить', 'заморожен', 'замороженный'],
+        ['unfreeze', 'разморозка', 'разморозить', 'разморожен'],
+        ['antiflood', 'антифлуд', 'флуд'],
+        ['antimat', 'антимат', 'мат'],
+        ['antilink', 'антиссылки', 'ссылки'],
+        ['antiraid', 'антирейд', 'рейд'],
+        ['setadmin', 'назначить', 'выдать'],
+        ['daily', 'ежедневный', 'дейли', 'бонус'],
+        ['balance', 'баланс'],
+        ['profile', 'профиль'],
+        ['staff', 'персонал', 'состав'],
+        ['chatstats', 'чатстатс', 'активность'],
+        ['achievements', 'достижения', 'ачивки', 'награды'],
+        ['transfer', 'перевод', 'перевести'],
+        ['inventory', 'инвентарь', 'рюкзак'],
+        ['start', 'старт', 'запуск'],
+        ['help', 'помощь', 'справка', 'хелп'],
+        ['blacklist', 'чс', 'черный', 'черныйсписок']
+    ];
+
+    const SYNONYMS = {};
+    SYNONYM_GROUPS.forEach((group) => {
+        const canonical = group[0];
+        group.forEach((word) => {
+            SYNONYMS[word] = canonical;
+        });
+    });
+
+    const ENDINGS = [
+        'иями', 'ями', 'ами', 'ого', 'его', 'ому', 'ему', 'ыми', 'ими',
+        'ая', 'яя', 'ое', 'ее', 'ые', 'ие', 'ой', 'ей', 'ий', 'ый',
+        'ов', 'ев', 'ах', 'ях', 'ам', 'ям', 'ом', 'ем', 'ую', 'юю',
+        'ы', 'и', 'а', 'я', 'у', 'ю', 'е', 'о', 'ь'
+    ];
+
+    function stem(word) {
+        if (word.length <= 4) return word;
+        for (let i = 0; i < ENDINGS.length; i++) {
+            const ending = ENDINGS[i];
+            if (word.endsWith(ending) && word.length - ending.length >= 4) {
+                return word.slice(0, -ending.length);
+            }
+        }
+        return word;
+    }
+
+    function canonical(word) {
+        return SYNONYMS[word] || SYNONYMS[stem(word)] || stem(word);
+    }
+
+    function tokenize(text) {
+        return normalizeText(text)
+            .split(/[^a-zа-я0-9@]+/)
+            .filter((word) => word && !STOP_WORDS.has(word))
+            .map(canonical);
+    }
+
+    const DF = {};
+    KB.forEach((item) => {
+        item._tokens = tokenize(item.q + ' ' + item.t);
+        item._set = new Set(item._tokens);
+        item._norm = item._tokens.join(' ');
+        item._set.forEach((token) => {
+            DF[token] = (DF[token] || 0) + 1;
+        });
+    });
+
+    function idf(token) {
+        return Math.log(1 + KB.length / (DF[token] || 1));
+    }
+
+    function levenshtein(a, b) {
+        if (Math.abs(a.length - b.length) > 2) return 99;
+        const row = [];
+        for (let j = 0; j <= b.length; j++) row[j] = j;
+        for (let i = 1; i <= a.length; i++) {
+            let prev = row[0];
+            row[0] = i;
+            for (let j = 1; j <= b.length; j++) {
+                const tmp = row[j];
+                row[j] = Math.min(row[j] + 1, row[j - 1] + 1, prev + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1));
+                prev = tmp;
+            }
+        }
+        return row[b.length];
+    }
+
+    function findBest(raw) {
+        const queryTokens = tokenize(raw);
+        if (!queryTokens.length) return null;
+        const queryNorm = queryTokens.join(' ');
+        let best = null;
+        let bestScore = 0;
+
+        KB.forEach((item) => {
+            let total = 0;
+            let hit = 0;
+
+            queryTokens.forEach((token) => {
+                const weight = DF[token] ? idf(token) : 0.35;
+                total += weight;
+                if (item._set.has(token)) {
+                    hit += weight;
+                    return;
+                }
+                let fuzzy = 0;
+                item._set.forEach((entryToken) => {
+                    if (entryToken.length < 4 || token.length < 4) return;
+                    if (entryToken.startsWith(token) || token.startsWith(entryToken)) {
+                        fuzzy = Math.max(fuzzy, 0.6);
+                    } else if (Math.abs(entryToken.length - token.length) <= 1 && levenshtein(token, entryToken) <= 1) {
+                        fuzzy = Math.max(fuzzy, 0.45);
+                    }
+                });
+                hit += weight * fuzzy;
+            });
+
+            let score = total ? hit / total : 0;
+            if (queryNorm.length >= 4 && item._norm.includes(queryNorm)) score += 0.2;
+            queryTokens.forEach((token) => {
+                if (token.length >= 3 && new RegExp('/' + token + '(?![a-z0-9_])').test(item.q.toLowerCase())) {
+                    score += 0.12;
+                }
+            });
+            for (let i = 0; i < queryTokens.length - 1; i++) {
+                if (item._norm.includes(queryTokens[i] + ' ' + queryTokens[i + 1])) score += 0.08;
+            }
+
+            if (score > bestScore) {
+                bestScore = score;
+                best = item;
+            }
+        });
+
+        return bestScore >= 0.42 ? best : null;
+    }
+
+    function getCommands(category) {
+        const root = document.querySelector('.command-category[data-cat="' + category + '"]');
+        if (!root) return [];
+        return Array.from(root.querySelectorAll('.cmd-entry')).map((entry) => {
+            const name = entry.querySelector('.cmd-name');
+            const desc = entry.querySelector('.cmd-desc');
+            return {
+                name: name ? name.textContent.trim() : '',
+                desc: desc ? desc.textContent.trim() : ''
+            };
+        });
+    }
+
+    function allCommands() {
+        const categories = [
+            ['base', '👤 Для всех'],
+            ['games', '🎮 Игры'],
+            ['social', '🤝 Социальные'],
+            ['lvl1', '🛡 1+ Кандидат'],
+            ['lvl2', '🔨 2+ Мл. модератор'],
+            ['lvl3', '⛔ 3+ Ст. модератор'],
+            ['lvl4', '⚡ 4+ Зам. руководителя'],
+            ['lvl5', '👑 5+ Руководитель'],
+            ['dev', '🛠 Разработчик']
+        ];
+        let out = '📚 **Все команды ChatCleanser**\n\n';
+        categories.forEach(([category, label]) => {
+            const commands = getCommands(category);
+            if (!commands.length) return;
+            out += '**' + label + ':** ' + commands.map((c) => '`' + c.name + '`').join(', ') + '\n\n';
+        });
+        out += 'Полный список с поиском и фильтрами — в разделе **#commands**.';
+        return out;
+    }
+
+    function levelAnswer(level) {
+        if (level === 'dev') {
+            const commands = getCommands('dev');
+            let out = '🛠 **Команды разработчика**\n\n';
+            commands.forEach((c) => {
+                out += '• `' + c.name + '` — ' + c.desc + '\n';
+            });
+            out += '\nДоступны только разработчикам. Обычные админы их не видят.';
+            return out;
+        }
+
+        const meta = LEVEL_META[level];
+        if (!meta) return FALLBACK;
+        const commands = getCommands('lvl' + level);
+        if (!commands.length) return FALLBACK;
+
+        let out = meta.icon + ' **Уровень ' + level + '+ — ' + meta.name + '**\n\n';
+        commands.forEach((c) => {
+            out += '• `' + c.name + '` — ' + c.desc + '\n';
+        });
+        if (level === 5) {
+            out += '\nУровень 6 (Владелец) — высший в чате, назначается разработчиком.';
+        } else {
+            out += '\nКоманды этого уровня доступны также всем более высоким уровням.';
+        }
+        return out;
+    }
+
+    function detectLevel(q) {
+        const match = q.match(/(?:уровн[а-я]*|lvl|level)\s*([1-6])|([1-6])\s*(?:уровн[а-я]*|lvl|level|\+)/);
+        if (match) return Number(match[1] || match[2]);
+        if (/кандидат/.test(q)) return 1;
+        if (/(младш|мл\.?\s*мод)/.test(q)) return 2;
+        if (/(старш|ст\.?\s*мод)/.test(q)) return 3;
+        if (/(зам\.?\s*рук|заместител)/.test(q)) return 4;
+        if (/(руководител|владелец)/.test(q)) return 5;
+        if (/(разработчик|девелопер)/.test(q) && /(команд|уровн|доступ|прав|возможност|меню|умеет|делает)/.test(q)) return 'dev';
+        return null;
+    }
+
+    function answerFor(raw) {
+        const q = normalizeText(raw).replace(/\s+/g, ' ').trim();
+        if (!q) return 'Напиши вопрос — например, «как замутить участника».';
+
+        if (/^(привет|здравствуй|хай|hello|hi|ку|добрый (день|вечер)|доброе утро)(?:\s|$|[,.!?])/.test(q)) {
+            return GREETING;
+        }
+        if (/^(спасибо|благодарю|спс|thanks|thank you)(?:\s|$|[,.!?])/.test(q)) {
+            return 'Пожалуйста! 😊 Если появится ещё вопрос о ChatCleanser — спрашивай.';
+        }
+        if (/^(пока|до свидания|бай|bye)(?:\s|$|[,.!?])/.test(q)) {
+            return 'До встречи! 👋 Возвращайся, если понадобится помощь по боту.';
+        }
+        if (/(как дела|как ты|что делаешь)/.test(q)) {
+            return 'У меня всё отлично — я всегда на связи и готов помочь с ChatCleanser. 😊\nСпроси о командах, модерации, играх или VIP.';
+        }
+        if (/(что ты умеешь|твои возможности|чем ты можешь|чем помочь|что можешь)/.test(q)) {
+            return '🤖 Я локальный помощник ChatCleanser. Могу рассказать:\n\n• о командах и уровнях доступа;\n• о модерации: варны, муты, баны, капча;\n• об играх: рулетка, RPS, кости, `/dick`;\n• о VIP, магазине и очках;\n• о настройке бота и правах;\n• о сайте и разделе #commands.\n\nПросто напиши вопрос обычными словами.';
+        }
+        if (/(кто ты|ты кто|ты бот|ты настоящий|ты ии|ты ai)/.test(q)) {
+            return 'Я AI-помощник сайта ChatCleanser. Работаю на локальной базе знаний: без API, без отправки данных и без доступа к твоим сообщениям в Telegram.\n\nМогу ответить на вопросы о боте и сайте.';
+        }
+        if (/^(как работает|как работают|как это работает)$/.test(q)) {
+            return 'Уточни, о чём именно: о рулетке, антифлуде, антимате, капче, VIP или командах. Напиши тему — и я расскажу подробнее.';
+        }
+
+        const level = detectLevel(q);
+        if (level !== null && !/(vip|вип)/.test(q)) {
+            return levelAnswer(level);
+        }
+
+        if (/^(команды|команда|список команд|все команды|какие команды|покажи команды|команды бота)$/.test(q) ||
+            /(все|список|покажи|какие)\s+команд/.test(q)) {
+            return allCommands();
+        }
+
+        const best = findBest(raw);
+        if (best) return best.a;
+        return FALLBACK;
+    }
+
+    function scrollBottom() {
+        requestAnimationFrame(() => {
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        });
+    }
+
+    function addUser(text) {
+        const row = document.createElement('div');
+        row.className = 'ai-msg user';
+        const bubble = document.createElement('div');
+        bubble.className = 'ai-bubble';
+        bubble.textContent = text;
+        row.appendChild(bubble);
+        messagesEl.appendChild(row);
+        scrollBottom();
+    }
+
+    function addBot(text) {
+        const row = document.createElement('div');
+        row.className = 'ai-msg bot';
+        const bubble = document.createElement('div');
+        bubble.className = 'ai-bubble';
+        bubble.innerHTML = formatAnswer(text);
+        row.appendChild(bubble);
+        messagesEl.appendChild(row);
+        scrollBottom();
+    }
+
+    function showTyping() {
+        hideTyping();
+        typingEl = document.createElement('div');
+        typingEl.className = 'ai-msg bot';
+        typingEl.innerHTML = '<div class="ai-bubble ai-typing"><i></i><i></i><i></i></div>';
+        messagesEl.appendChild(typingEl);
+        scrollBottom();
+    }
+
+    function hideTyping() {
+        if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+        typingEl = null;
+    }
+
+    function renderSuggestions(items) {
+        suggestEl.innerHTML = '';
+        items.forEach((text) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.textContent = text;
+            button.addEventListener('click', () => {
+                if (busy) return;
+                addUser(text);
+                ask(text);
+            });
+            suggestEl.appendChild(button);
+        });
+    }
+
+    function ask(text) {
+        busy = true;
+        showTyping();
+        const delay = 420 + Math.random() * 420;
+        setTimeout(() => {
+            hideTyping();
+            addBot(answerFor(text));
+            busy = false;
+            inputEl.focus();
+        }, delay);
+    }
+
+    function greet() {
+        addBot(GREETING);
+        renderSuggestions(SUGGESTIONS);
+    }
+
+    function openPanel() {
+        panel.classList.add('open');
+        panel.setAttribute('aria-hidden', 'false');
+        fab.setAttribute('aria-expanded', 'true');
+        fab.classList.add('active');
+        if (!greeted) {
+            greeted = true;
+            greet();
+        }
+        setTimeout(() => inputEl.focus(), 260);
+    }
+
+    function closePanel() {
+        panel.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+        fab.setAttribute('aria-expanded', 'false');
+        fab.classList.remove('active');
+        fab.focus();
+    }
+
+    fab.addEventListener('click', () => {
+        if (panel.classList.contains('open')) closePanel();
+        else openPanel();
+    });
+
+    closeBtn.addEventListener('click', closePanel);
+
+    clearBtn.addEventListener('click', () => {
+        messagesEl.innerHTML = '';
+        hideTyping();
+        busy = false;
+        greeted = true;
+        greet();
+        inputEl.focus();
+    });
+
+    formEl.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const text = inputEl.value.trim();
+        if (!text || busy) return;
+        inputEl.value = '';
+        addUser(text);
+        ask(text);
+    });
+
+    document.querySelectorAll('[data-ai-open]').forEach((el) => {
+        el.addEventListener('click', (event) => {
+            event.preventDefault();
+            openPanel();
+        });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && panel.classList.contains('open')) {
+            closePanel();
+        }
+    });
+
+    renderSuggestions(SUGGESTIONS);
+})();
+
 </script>
 </body>
 </html>
